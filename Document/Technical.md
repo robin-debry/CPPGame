@@ -24,11 +24,19 @@ minHeight
 
 initialWidth
 
-
 ### Subclass 2 : PoliceMan 
 
 ## Class 2 : Coin (reward)
 
+value
+
+size
+
+sprite
+
+placement
+
 ## Class 3 : Missiles 
  
 
+****
