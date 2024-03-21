@@ -26,6 +26,12 @@ initialWidth
 
 ### Subclass 2 : PoliceMan 
 
+random direction
+
+speed
+
+different states
+
 ## Class 2 : Coin (reward)
 
 value
