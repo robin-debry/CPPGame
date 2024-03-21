@@ -42,7 +42,4 @@ sprite
 
 placement
 
-## Class 3 : Missiles 
- 
-
-****
+## Class 3 : Missiles  
