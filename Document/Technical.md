@@ -36,19 +36,21 @@ SFML is a simple and fast multimedia library. It is written in C++ and it is use
 - speed
 - differentStates
 
-### Class 2 : Coin (reward)
+## Class 2 : Items 
+
+- placement 
+- sprite
+- size 
+
+### SubClass 1 : Coin (reward)
 
 - value
-- size
 - sprite
-- placement
 
-## Class 3 : Missiles
+### SubClass 2 : Missiles
 
 - speed
-- size
 - sprite
-- placement
 - direction
 
 ## Music
