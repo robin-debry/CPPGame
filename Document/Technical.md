@@ -10,7 +10,9 @@ The game is written in C++.
 
 SFML is a simple and fast multimedia library. It is written in C++ and it is used to create games and multimedia applications. It provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. It is composed of five modules: the `system`, `window`, `graphics`, `audio` and `network` modules.
 
-## Class 1 : Human
+## Classes :
+
+### Class 1 : Human
 
 speed
 
@@ -20,7 +22,7 @@ size
 
 sprite
 
-### Subclass 1 : Player 
+#### Subclass 1 : Player 
 
 name
 
@@ -34,7 +36,7 @@ minHeight
 
 initialWidth
 
-### Subclass 2 : PoliceMan 
+#### Subclass 2 : PoliceMan 
 
 random direction
 
@@ -42,7 +44,7 @@ speed
 
 different states
 
-## Class 2 : Coin (reward)
+### Class 2 : Coin (reward)
 
 value
 
@@ -52,5 +54,5 @@ sprite
 
 placement
 
-## Class 3 : Missiles 
+### Class 3 : Missiles 
  
