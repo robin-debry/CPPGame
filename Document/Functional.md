@@ -1,4 +1,6 @@
-# Type of game
+# Functional Specification
+
+## Type of game
 
 This game is a 2D platformer game.
 You need just the space bar to play the game.

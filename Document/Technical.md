@@ -1,48 +1,100 @@
-# Technical Specification : 
+# Technical Specification
 
 ## Class 1 : Human
 
-speed
+- speed
+- life
+- size
+- sprite
+- physics(gravity)
 
-life 
+### Subclass 1 : Player
 
-size
+- name
+- jump
+- direction
+- maxHeight
+- minHeight
+- initialWidth
 
-sprite
+### Subclass 2 : PoliceMan
 
-### Subclass 1 : Player 
-
-name
-
-jump
-
-direction
-
-maxHeight
-
-minHeight
-
-initialWidth
-
-### Subclass 2 : PoliceMan 
-
-random direction
-
-speed
-
-different states
+- randomDirection
+- speed
+- differentStates
 
 ## Class 2 : Coin (reward)
 
-value
+- value
+- size
+- sprite
+- placement
 
-size
+## Class 3 : Missiles
 
-sprite
+- speed
+- size
+- sprite
+- placement
+- direction
 
-placement
+## Music
 
-## Class 3 : Missiles 
- 
+For the music we will use the following songs:
 
-****
+- [On soundCloud](https://on.soundcloud.com/MMTPRLJ4Lrom9nrFA)
+
+## How implement the music in C++
+
+```cpp
+#include <SFML/Audio.hpp>
+
+int main() {
+    sf::Music music;
+    if (!music.openFromFile("music.ogg")) {
+        return -1; // error
+    }
+    music.play();
+}
+```
+
+## How to loop the music in C++
+
+```cpp
+music.setLoop(true);
+```
+
+## How to create a class in C++
+
+```cpp
+
+class <ClassName> {
+    public:
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+};
+```
+
+## How to create a subclass in C++
+
+```cpp
+class <SubClassName> : public <ClassName> {
+    public:
+       <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+        <VariableType> <VariableName>;
+};
+```
+
+## How to create a method in C++
+
+```cpp
+<ReturnType> <ClassName>::<MethodName>(<ParameterType> <ParameterName>) {
+}
+```
