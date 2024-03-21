@@ -13,3 +13,7 @@ The objective of the game is to escape from the bank without getting caught by t
 ## Scoring
 
 The score is the meters the player has run. At the beginning it is 10 meters per second but after 3 minutes it increases to 15 meters per second. After 5 minutes it increases to 20 meters per second.
+
+## Money
+
+For the first version of the game the money will not be used for anything. It will be just a collectible item. But in the future we can add a shop where the player can buy power-ups with the money.
