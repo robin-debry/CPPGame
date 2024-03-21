@@ -1,5 +1,15 @@
 # Technical Specification : 
 
+## Language :
+
+The game is written in C++.
+
+## Libraries :
+
+### SFML :
+
+SFML is a simple and fast multimedia library. It is written in C++ and it is used to create games and multimedia applications. It provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. It is composed of five modules: the `system`, `window`, `graphics`, `audio` and `network` modules.
+
 ## Class 1 : Human
 
 speed
@@ -44,5 +54,3 @@ placement
 
 ## Class 3 : Missiles 
  
-
-****
