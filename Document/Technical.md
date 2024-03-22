@@ -27,14 +27,11 @@ SFML is a simple and fast multimedia library. It is written in C++ and it is use
 - direction
 - maxHeight
 - minHeight
-- sprite
 - initialWidth
 
 ### Subclass 2 : PoliceMan
 
 - randomDirection
-- speed
-- differentStates
 
 ## Class 2 : Items 
 
