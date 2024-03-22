@@ -8,6 +8,7 @@ class Human {
         int size; 
         int gravity; 
         void sprite(); 
+
 };
 
 class Player : public Human {
@@ -28,6 +29,11 @@ class PoliceMan : public Human {
         bool diffrentState; 
 };
 
-void Human::sprite(){
-    
+void Human::sprite() {
+    std::cout << "Human sprite" << std::endl;
 }
+
+void Player::sprite() {
+    std::cout << "Player sprite" << std::endl;
+}
+

@@ -1,6 +1,4 @@
 #include <SFML/Graphics.hpp>
-
-// make a game with a sprite of robber inside human.hpp
 #include "human.hpp"
 
 int main()
@@ -8,7 +6,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
 
     Human human;
-    human.load("robber.png");
+    human.load("../Images/Animations/Run/run_000.png");
 
     while (window.isOpen())
     {
