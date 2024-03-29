@@ -21,15 +21,16 @@ void Game::loadTextures() {
     }
 
     // Scale the textures based on the window's dimensions
-    sf::Vector2u windowSize = window.getSize();
+    sf::Vector2u windowSizeU = window.getSize();
+    sf::Vector2f windowSize(static_cast<float>(windowSizeU.x), static_cast<float>(windowSizeU.y));
     backgroundTexture1.setSmooth(true);
     backgroundTexture2.setSmooth(true);
     frontgroundTexture1.setSmooth(true);
     frontgroundTexture2.setSmooth(true);
-    backgroundTexture1.setScale(windowSize.x / backgroundTexture1.getSize().x, windowSize.y / backgroundTexture1.getSize().y);
-    backgroundTexture2.setScale(windowSize.x / backgroundTexture2.getSize().x, windowSize.y / backgroundTexture2.getSize().y);
-    frontgroundTexture1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
-    frontgroundTexture2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
+    background1.setScale(windowSize.x / backgroundTexture1.getSize().x, windowSize.y / backgroundTexture1.getSize().y);
+    background2.setScale(windowSize.x / backgroundTexture2.getSize().x, windowSize.y / backgroundTexture2.getSize().y);
+    frontground1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
+    frontground2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
 
     for (int i = 0; i < 15; ++i) {
         sf::Texture texture;
