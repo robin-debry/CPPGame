@@ -155,6 +155,7 @@ void Game::update(sf::Time deltaTime) {
     }
 
     if (isSpacePressed){
+        player.setTexture(playerJumpTextures);
         player.move(0.f, -backgroundSpeed * dtSeconds);
         isJumping = true;
         timeElapsed = 0.0f;
