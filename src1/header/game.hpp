@@ -14,8 +14,12 @@ private:
     std::vector<sf::Texture> playerTextures;
     sf::Texture backgroundTexture1;
     sf::Texture backgroundTexture2;
+    sf::Texture frontgroundTexture1;
+    sf::Texture frontgroundTexture2;
     sf::Sprite background1;
     sf::Sprite background2;
+    sf::Sprite frontground1;
+    sf::Sprite frontground2;
     sf::Sprite player;
     sf::RectangleShape blueRectangle;
     sf::RectangleShape redRectangle;

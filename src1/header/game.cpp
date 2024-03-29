@@ -15,7 +15,7 @@ void Game::initialize() {
 
 // Load textures from files
 void Game::loadTextures() {
-    if (!backgroundTexture1.loadFromFile("img/background.jpg") || !backgroundTexture2.loadFromFile("img/background.jpg")) {
+    if (!backgroundTexture1.loadFromFile("img/background.jpg") || !backgroundTexture2.loadFromFile("img/background.jpg") || !frontgroundTexture1.loadFromFile("img/frontground.png") || !frontgroundTexture2.loadFromFile("img/frontground.png")){
         std::cerr << "Failed to load background textures." << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -56,6 +56,13 @@ void Game::setupScene() {
 
     player.setPosition(200.f, initialYPosition);
     player.setScale(0.14, 0.14);
+
+    frontground1.setTexture(frontgroundTexture1);
+    frontground2.setTexture(frontgroundTexture2);
+    frontground1.setScale(scaleFactor, scaleFactor);
+    frontground2.setScale(scaleFactor, scaleFactor);
+    frontground1.setPosition(0.f, 0.f);
+    frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
 }
 
 // Main game loop
@@ -94,6 +101,9 @@ void Game::update(sf::Time deltaTime) {
     background1.move(-backgroundSpeed * dtSeconds, 0.f);
     background2.move(-backgroundSpeed * dtSeconds, 0.f);
 
+    frontground1.move(-backgroundSpeed * dtSeconds, 0.f);
+    frontground2.move(-backgroundSpeed * dtSeconds, 0.f);
+
     if (background1.getPosition().x + background1.getGlobalBounds().width < 0) {
         background1.setPosition(background2.getPosition().x + background2.getGlobalBounds().width, 0.f);
     }
@@ -108,6 +118,14 @@ void Game::update(sf::Time deltaTime) {
 
     if (player.getPosition().y < 0) {
         player.setPosition(player.getPosition().x, 0);
+    }
+
+    if (frontground1.getPosition().x + frontground1.getGlobalBounds().width < 0) {
+        frontground1.setPosition(frontground2.getPosition().x + frontground2.getGlobalBounds().width, 0.f);
+    }
+
+    if (frontground2.getPosition().x + frontground2.getGlobalBounds().width < 0) {
+        frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
     }
 
     // Update score and player frame
@@ -132,6 +150,8 @@ void Game::render() {
     window.draw(background1);
     window.draw(background2);
     window.draw(player);
+    window.draw(frontground1);
+    window.draw(frontground2);
 
     // Draw score
     sf::Text scoreText;
