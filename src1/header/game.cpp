@@ -122,7 +122,7 @@ void Game::setupScene() {
 
 // Main game loop
 int Game::run() {
-    while (window.isOpen()) {
+    while (window.isOpen()) { 
         sf::Time deltaTime = clock.restart();
         processEvents();
         update(deltaTime);
@@ -146,6 +146,7 @@ void Game::processEvents() {
 
 // Update game state
 void Game::update(sf::Time deltaTime) {
+    sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
     policemanTimeElapsed += dtSeconds;
     if (policemanTimeElapsed >= animationSpeed) {
@@ -171,7 +172,27 @@ void Game::update(sf::Time deltaTime) {
     }
     else
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
-        
+
+    
+    // Update policeman position and animation
+    policemanTimeElapsed += dtSeconds;
+    if (policemanTimeElapsed >= animationSpeed) {
+        policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
+        policeman.setTexture(policemanTextures[policemanCurrentFrame]);
+        policemanTimeElapsed = 0.0f;
+    }
+
+    // Move policeman from right to left
+    float policemanSpeed = 700.0f; // Adjust speed as needed
+    float dx = -policemanSpeed * dtSeconds; // Calculate horizontal movement
+    policeman.move(dx, 0); // Move the policeman horizontally
+
+    // Check if policeman has moved out of the window
+    if (policeman.getPosition().x + policeman.getLocalBounds().width < 0) {
+        // Reset policeman position to the right side of the window
+        policeman.setPosition(window.getSize().x, initialYPosition + blueRectangle.getSize().y - 50);
+    }
+   
 
     // Update background
     background1.move(-backgroundSpeed * dtSeconds, 0.f);
