@@ -3,7 +3,8 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), currentFrame(0) {
+    initialYPosition = window.getSize().y * 0.68f;
     initialize();
 }
 
