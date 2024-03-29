@@ -3,24 +3,27 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0),Coins(0), currentFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentFrame(0)
+{
     initialYPosition = window.getSize().y * 0.68f;
     initialize();
 }
 
 // Initialize game components
-void Game::initialize() {
+void Game::initialize()
+{
     loadTextures();
     setupScene();
 }
 
 // Load textures from files
-void Game::loadTextures() {
-    if (!backgroundTexture1.loadFromFile("img/background.jpg") || !backgroundTexture2.loadFromFile("img/background.jpg") || !frontgroundTexture1.loadFromFile("img/frontground.png") || !frontgroundTexture2.loadFromFile("img/frontground.png")){
+void Game::loadTextures()
+{
+    if (!backgroundTexture1.loadFromFile("img/background.jpg") || !backgroundTexture2.loadFromFile("img/background.jpg") || !frontgroundTexture1.loadFromFile("img/frontground.png") || !frontgroundTexture2.loadFromFile("img/frontground.png"))
+    {
         std::cerr << "Failed to load background textures." << std::endl;
         exit(EXIT_FAILURE);
     }
-
 
     // Scale the textures based on the window's dimensions
     sf::Vector2u windowSizeU = window.getSize();
@@ -34,50 +37,58 @@ void Game::loadTextures() {
     frontground1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
     frontground2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
 
-
-    for (int i = 0; i < 15; ++i) {
+    for (int i = 0; i < 15; ++i)
+    {
         sf::Texture texture;
         std::string filename = "../Images/The Black Thief Slim Version/Animations/Run/run_";
         filename += (i < 10) ? "00" + std::to_string(i) : "0" + std::to_string(i);
         filename += ".png";
 
-        if (!texture.loadFromFile(filename)) {
+        if (!texture.loadFromFile(filename))
+        {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
         playerRunTextures.push_back(texture);
     }
-    if (!playerJumpTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_009.png")) {
+    if (!playerJumpTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_009.png"))
+    {
         std::cerr << "Failed to load player jump texture." << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    if(!playerFallTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Fall/jump_fall_000.png")){
+    if (!playerFallTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Fall/jump_fall_000.png"))
+    {
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < 7; ++i)
+    {
         sf::Texture texture;
         std::string filename = "../Images/Policeman/1/walk/1_police_Walk_";
         filename += (i < 7) ? "00" + std::to_string(i) : "0" + std::to_string(i);
         filename += ".png";
 
-        if (!texture.loadFromFile(filename)) {
+        if (!texture.loadFromFile(filename))
+        {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
         policemanTextures.push_back(texture);
     }
-    if (!coinTexture.loadFromFile("../Images/money/money.png")) {
+    if (!coinTexture.loadFromFile("../Images/money/money.png"))
+    {
         std::cerr << "Failed to load coin texture." << std::endl;
         exit(EXIT_FAILURE);
     }
 }
 
 // Setup initial scene elements
-void Game::setupScene() {
-    if (!font.loadFromFile("font/arial.ttf")) {
+void Game::setupScene()
+{
+    if (!font.loadFromFile("font/arial.ttf"))
+    {
         std::cerr << "Failed to load font." << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -88,10 +99,8 @@ void Game::setupScene() {
     player.setTexture(playerRunTextures[0]);
     coin.setTexture(coinTexture);
 
-
     player.setTexture(playerTextures[0]);
     policeman.setTexture(policemanTextures[0]);
-
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
@@ -116,13 +125,12 @@ void Game::setupScene() {
     frontground2.setScale(scaleFactor, scaleFactor);
     frontground1.setPosition(0.f, 0.f);
     frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
-
-    
 }
 
 // Main game loop
 int Game::run() {
     while (window.isOpen()) { 
+
         sf::Time deltaTime = clock.restart();
         processEvents();
         update(deltaTime);
@@ -132,9 +140,11 @@ int Game::run() {
 }
 
 // Process all events
-void Game::processEvents() {
+void Game::processEvents()
+{
     sf::Event event;
-    while (window.pollEvent(event)) {
+    while (window.pollEvent(event))
+    {
         if (event.type == sf::Event::Closed)
             window.close();
         else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
@@ -149,23 +159,27 @@ void Game::update(sf::Time deltaTime) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
     policemanTimeElapsed += dtSeconds;
-    if (policemanTimeElapsed >= animationSpeed) {
+    if (policemanTimeElapsed >= animationSpeed)
+    {
         policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
         policeman.setTexture(policemanTextures[policemanCurrentFrame]);
         policemanTimeElapsed = 0.0f;
     }
 
-    if (isSpacePressed){
+    if (isSpacePressed)
+    {
         player.setTexture(playerJumpTextures);
         player.move(0.f, -backgroundSpeed * dtSeconds);
         isJumping = true;
         timeElapsed = 0.0f;
     }
-    else if (!isSpacePressed && isJumping){
+    else if (!isSpacePressed && isJumping)
+    {
         player.setTexture(playerFallTextures);
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
         timeElapsed = 0.0f;
-        if (player.getPosition().y >= initialYPosition){
+        if (player.getPosition().y >= initialYPosition)
+        {
             player.setPosition(player.getPosition().x, initialYPosition);
             isJumping = false;
         }
@@ -201,47 +215,73 @@ void Game::update(sf::Time deltaTime) {
     frontground1.move(-backgroundSpeed * dtSeconds, 0.f);
     frontground2.move(-backgroundSpeed * dtSeconds, 0.f);
 
-    if (background1.getPosition().x + background1.getGlobalBounds().width < 0) {
+    if (background1.getPosition().x + background1.getGlobalBounds().width < 0)
+    {
         background1.setPosition(background2.getPosition().x + background2.getGlobalBounds().width, 0.f);
     }
 
-    if (background2.getPosition().x + background2.getGlobalBounds().width < 0) {
+    if (background2.getPosition().x + background2.getGlobalBounds().width < 0)
+    {
         background2.setPosition(background1.getPosition().x + background1.getGlobalBounds().width, 0.f);
     }
 
-    if (player.getPosition().y > initialYPosition) {
+    if (player.getPosition().y > initialYPosition)
+    {
         player.setPosition(player.getPosition().x, initialYPosition);
     }
 
-    if (player.getPosition().y < 0) {
+    if (player.getPosition().y < 0)
+    {
         player.setPosition(player.getPosition().x, 0);
     }
 
-    if (frontground1.getPosition().x + frontground1.getGlobalBounds().width < 0) {
+    if (frontground1.getPosition().x + frontground1.getGlobalBounds().width < 0)
+    {
         frontground1.setPosition(frontground2.getPosition().x + frontground2.getGlobalBounds().width, 0.f);
     }
 
-    if (frontground2.getPosition().x + frontground2.getGlobalBounds().width < 0) {
+    if (frontground2.getPosition().x + frontground2.getGlobalBounds().width < 0)
+    {
         frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
     }
 
     // Update score and player frame
     sf::Time scoreElapsedTime = scoreClock.getElapsedTime();
-    if (scoreElapsedTime.asSeconds() >= 1.0f) {
+    if (scoreElapsedTime.asSeconds() >= 1.0f)
+    {
         score += 10;
         scoreClock.restart();
     }
 
     timeElapsed += dtSeconds;
-    if (timeElapsed >= 0.1f) {
+    if (timeElapsed >= 0.1f)
+    {
         currentFrame = (currentFrame + 1) % 15;
         player.setTexture(playerRunTextures[currentFrame]);
         timeElapsed = 0.0f;
     }
+
+    // Update coin position
+    // Update coin position
+    coin.move(-backgroundSpeed * dtSeconds, 0.f);
+    if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
+    {
+        // Reset coin position and set a random Y position above the threshold
+        coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
+    }
+
+    // Check for collision between player and coin
+    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
+    {
+        score += 100;                                                                                                          // Increase score
+        Coins -= 100;                                                                                                          // Decrease coins count
+        coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
+    }
 }
 
 // Render all game objects
-void Game::render() {
+void Game::render()
+{
     window.clear();
     window.draw(background1);
     window.draw(background2);
@@ -265,8 +305,19 @@ void Game::render() {
     coinsText.setFont(font);
     coinsText.setCharacterSize(24);
     coinsText.setFillColor(sf::Color::White);
-    coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 10, 10);
-    coinsText.setString(std::to_string(Coins) + " Coins");
+    // Adjust position to the top right corner
+    coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 100, 10);
+    coinsText.setString(std::to_string(Coins) + " $");
+
+    // If score is negative, display the absolute value
+    if (Coins < 0)
+    {
+        coinsText.setString(std::to_string(-Coins) + " $");
+    }
+    else
+    {
+        coinsText.setString(std::to_string(Coins) + " $");
+    }
 
     window.draw(scoreText);
     window.draw(coinsText);
