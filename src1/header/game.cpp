@@ -45,7 +45,11 @@ void Game::loadTextures() {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
-        playerTextures.push_back(texture);
+        playerRunTextures.push_back(texture);
+    }
+    if (!playerJumpTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_009.png")) {
+        std::cerr << "Failed to load player jump texture." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -58,7 +62,7 @@ void Game::setupScene() {
 
     background1.setTexture(backgroundTexture1);
     background2.setTexture(backgroundTexture2);
-    player.setTexture(playerTextures[0]);
+    player.setTexture(playerRunTextures[0]);
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
@@ -107,8 +111,10 @@ void Game::processEvents() {
 // Update game state
 void Game::update(sf::Time deltaTime) {
     float dtSeconds = deltaTime.asSeconds();
-    if (isSpacePressed)
+    if (isSpacePressed){
+        player.setTexture(playerJumpTextures);
         player.move(0.f, -backgroundSpeed * dtSeconds);
+    }
     else
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
 
@@ -154,7 +160,7 @@ void Game::update(sf::Time deltaTime) {
     timeElapsed += dtSeconds;
     if (timeElapsed >= 0.1f) {
         currentFrame = (currentFrame + 1) % 15;
-        player.setTexture(playerTextures[currentFrame]);
+        player.setTexture(playerRunTextures[currentFrame]);
         timeElapsed = 0.0f;
     }
 }
