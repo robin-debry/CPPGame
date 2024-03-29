@@ -239,6 +239,15 @@ void Game::render() {
     scoreText.setPosition(10, 10);
     scoreText.setString(std::to_string(score) + "m");
 
+    // Draw coins
+    sf::Text coinsText;
+    coinsText.setFont(font);
+    coinsText.setCharacterSize(24);
+    coinsText.setFillColor(sf::Color::White);
+    coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 10, 10);
+    coinsText.setString(std::to_string(Coins) + " Coins");
+
     window.draw(scoreText);
+    window.draw(coinsText);
     window.display();
 }
