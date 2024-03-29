@@ -55,7 +55,7 @@ void Game::loadTextures() {
 
 // Setup initial scene elements
 void Game::setupScene() {
-    if (!font.loadFromFile("arial.ttf")) {
+    if (!font.loadFromFile("font/arial.ttf")) {
         std::cerr << "Failed to load font." << std::endl;
         exit(EXIT_FAILURE);
     }
@@ -180,7 +180,7 @@ void Game::render() {
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10, 10);
-    scoreText.setString("Score: " + std::to_string(score));
+    scoreText.setString(std::to_string(score) + "m");
 
     window.draw(scoreText);
     window.display();
