@@ -95,8 +95,21 @@ int main()
             blueRectangle.setPosition(blueRectangle.getPosition().x, 0);
         }
 
+        // Draw score
+        sf::Font font;
+        if (!font.loadFromFile("arial.ttf")) {
+            return EXIT_FAILURE;
+        }
+
+        sf:: Text GameOver;
+        GameOver.setFont(font);
+        GameOver.setCharacterSize(50);
+        GameOver.setFillColor(sf::Color::Black);
+        GameOver.setPosition(800, 800);
+        GameOver.setString("Game Over");
+
         if (redRectangle.getPosition().x < 0) {
-            redRectangle.setPosition(800.f, initialYPosition + blueRectangle.getSize().y); // Reset the red rectangle position when it goes out of the window
+            window.draw(GameOver); // Reset the red rectangle position when it goes out of the window
         }
 
         window.clear();
@@ -105,11 +118,6 @@ int main()
         window.draw(blueRectangle);
         window.draw(redRectangle);
 
-        // Draw score
-        sf::Font font;
-        if (!font.loadFromFile("arial.ttf")) {
-            return EXIT_FAILURE;
-        }
 
         sf::Text scoreText;
         scoreText.setFont(font);
