@@ -15,7 +15,7 @@ int main()
         return EXIT_FAILURE;
     }
 
-    std::vector<sf::Texture> playerTextures;
+    std::vector<sf::Texture> playerRunTextures;
     for (int i = 0; i < 15; ++i) {
         sf::Texture texture;
         std::string filename = "../Images/The Black Thief Slim Version/Animations/Run/run_";
@@ -28,21 +28,33 @@ int main()
             std::cerr << "Failed to load texture: " << filename << std::endl;
             return EXIT_FAILURE;
         }
-        playerTextures.push_back(texture);
+        playerRunTextures.push_back(texture);
     }
+    std::vector<sf::Texture> playerJumpTextures;
+    for (int i = 0; i < 9; ++i) {
+        sf::Texture texture;
+        std::string filename = "../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_";
+            filename += "00" + std::to_string(i) + ".png";
 
+        if (!texture.loadFromFile(filename)) {
+            std::cerr << "Failed to load texture: " << filename << std::endl;
+            return EXIT_FAILURE;
+        }
+        playerJumpTextures.push_back(texture);
+    }
 
     sf::Sprite background1(backgroundTexture1);
     sf::Sprite background2(backgroundTexture2);
     sf::Sprite player;
-    player.setTexture(playerTextures[0]);
+    player.setTexture(playerRunTextures[0]);
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
     float scaleFactor = std::max(scaleX, scaleY);
 
     // Animation variables
-    int currentFrame = 0;
+    int currentRunFrame = 0;
+    int currentJumpFrame = 0;
 
     background1.setScale(scaleFactor, scaleFactor);
     background2.setScale(scaleFactor, scaleFactor);
@@ -113,11 +125,12 @@ int main()
         }
 
 
-        if (isSpacePressed)
-            // blueRectangle.move(0.f, -backgroundSpeed * dtSeconds); // Move the blue rectangle upwards
+        if (isSpacePressed){
+            player.setTexture(playerJumpTextures[currentJumpFrame]);
+            currentJumpFrame = (currentJumpFrame + 1) % 9;
             player.move(0.f, -backgroundSpeed * dtSeconds); // Move the blue rectangle upwards
+        } 
         else
-            // blueRectangle.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds); // Move the blue rectangle downwards with gravity
             player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds); // Move the blue rectangle downwards with gravity
 
 
@@ -135,9 +148,7 @@ int main()
             }
 
 
-        // if (blueRectangle.getPosition().y > initialYPosition) {
-        //     blueRectangle.setPosition(blueRectangle.getPosition().x, initialYPosition);
-        // }
+        
 
         if (player.getPosition().y > initialYPosition) {
             player.setPosition(player.getPosition().x, initialYPosition);
@@ -165,13 +176,14 @@ int main()
             window.draw(GameOver); // Reset the red rectangle position when it goes out of the window
 
         }
-
+        if (!isSpacePressed){
         static float timeElapsed = 0.0f;
         timeElapsed += dtSeconds;
         if (timeElapsed >= 0.1f) {
-            currentFrame = (currentFrame + 1) % 15; // Loop through frames
-            player.setTexture(playerTextures[currentFrame]);
+            currentRunFrame = (currentRunFrame + 1) % 15; // Loop through frames
+            player.setTexture(playerRunTextures[currentRunFrame]);
             timeElapsed = 0.0f;
+        }
         }
 
         window.clear();
