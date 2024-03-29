@@ -14,6 +14,8 @@ private:
     std::vector<sf::Texture> playerRunTextures;
     sf::Texture playerJumpTextures;
     sf::Texture playerFallTextures;
+    std::vector<sf::Texture> playerTextures;
+    std::vector<sf::Texture> policemanTextures;
     sf::Texture backgroundTexture1;
     sf::Texture backgroundTexture2;
     sf::Texture frontgroundTexture1;
@@ -22,10 +24,14 @@ private:
     sf::Sprite background2;
     sf::Sprite frontground1;
     sf::Sprite frontground2;
+    sf::Sprite policeman;
     sf::Sprite player;
     sf::RectangleShape blueRectangle;
     sf::RectangleShape redRectangle;
     sf::Font font;
+    float animationSpeed = 0.1f;
+    int policemanCurrentFrame;
+    float policemanTimeElapsed;
     float backgroundSpeed;
     float gravity;
     float initialYPosition;

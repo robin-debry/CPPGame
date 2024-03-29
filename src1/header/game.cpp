@@ -56,6 +56,19 @@ void Game::loadTextures() {
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    for (int i = 0; i < 7; ++i) {
+        sf::Texture texture;
+        std::string filename = "../Images/Policeman/1/walk/1_police_Walk_";
+        filename += (i < 7) ? "00" + std::to_string(i) : "0" + std::to_string(i);
+        filename += ".png";
+
+        if (!texture.loadFromFile(filename)) {
+            std::cerr << "Failed to load player texture: " << filename << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        policemanTextures.push_back(texture);
+    }
 }
 
 // Setup initial scene elements
@@ -67,7 +80,12 @@ void Game::setupScene() {
 
     background1.setTexture(backgroundTexture1);
     background2.setTexture(backgroundTexture2);
+
     player.setTexture(playerRunTextures[0]);
+
+    player.setTexture(playerTextures[0]);
+    policeman.setTexture(policemanTextures[0]);
+
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
@@ -80,6 +98,8 @@ void Game::setupScene() {
 
     player.setPosition(200.f, initialYPosition);
     player.setScale(0.14, 0.14);
+    policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50); // Align policeman below player
+    policeman.setScale(0.12, 0.12);
 
     frontground1.setTexture(frontgroundTexture1);
     frontground2.setTexture(frontgroundTexture2);
@@ -116,8 +136,14 @@ void Game::processEvents() {
 // Update game state
 void Game::update(sf::Time deltaTime) {
     float dtSeconds = deltaTime.asSeconds();
+    policemanTimeElapsed += dtSeconds;
+    if (policemanTimeElapsed >= animationSpeed) {
+        policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
+        policeman.setTexture(policemanTextures[policemanCurrentFrame]);
+        policemanTimeElapsed = 0.0f;
+    }
+
     if (isSpacePressed){
-        player.setTexture(playerJumpTextures);
         player.move(0.f, -backgroundSpeed * dtSeconds);
         isJumping = true;
         timeElapsed = 0.0f;
@@ -133,6 +159,7 @@ void Game::update(sf::Time deltaTime) {
     }
     else
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
+        
 
     // Update background
     background1.move(-backgroundSpeed * dtSeconds, 0.f);
@@ -172,7 +199,6 @@ void Game::update(sf::Time deltaTime) {
         scoreClock.restart();
     }
 
-
     timeElapsed += dtSeconds;
     if (timeElapsed >= 0.1f) {
         currentFrame = (currentFrame + 1) % 15;
@@ -187,6 +213,7 @@ void Game::render() {
     window.draw(background1);
     window.draw(background2);
     window.draw(player);
+    window.draw(policeman);
     window.draw(frontground1);
     window.draw(frontground2);
 
