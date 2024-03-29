@@ -3,7 +3,8 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentRunFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), currentFrame(0) {
+    initialYPosition = window.getSize().y * 0.68f;
     initialize();
 }
 
@@ -20,6 +21,7 @@ void Game::loadTextures() {
         exit(EXIT_FAILURE);
     }
 
+
     // Scale the textures based on the window's dimensions
     sf::Vector2u windowSizeU = window.getSize();
     sf::Vector2f windowSize(static_cast<float>(windowSizeU.x), static_cast<float>(windowSizeU.y));
@@ -32,6 +34,7 @@ void Game::loadTextures() {
     frontground1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
     frontground2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
 
+
     for (int i = 0; i < 15; ++i) {
         sf::Texture texture;
         std::string filename = "../Images/The Black Thief Slim Version/Animations/Run/run_";
@@ -42,7 +45,7 @@ void Game::loadTextures() {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
-        playerRunTextures.push_back(texture);
+        playerTextures.push_back(texture);
     }
 }
 
@@ -55,12 +58,11 @@ void Game::setupScene() {
 
     background1.setTexture(backgroundTexture1);
     background2.setTexture(backgroundTexture2);
-    player.setTexture(playerRunTextures[0]);
+    player.setTexture(playerTextures[0]);
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
     float scaleFactor = std::max(scaleX, scaleY);
-    
 
     background1.setScale(scaleFactor, scaleFactor);
     background2.setScale(scaleFactor, scaleFactor);
@@ -97,7 +99,6 @@ void Game::processEvents() {
             window.close();
         else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
             isSpacePressed = true;
-            
         else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
             isSpacePressed = false;
     }
@@ -106,18 +107,10 @@ void Game::processEvents() {
 // Update game state
 void Game::update(sf::Time deltaTime) {
     float dtSeconds = deltaTime.asSeconds();
-    if (isSpacePressed){
-    timeElapsed += dtSeconds;
-    if (timeElapsed >= 0.1f) {
-        currentJumpFrame = (currentJumpFrame + 1) % 9;
-        player.setTexture(playerJumpTextures[currentJumpFrame]);
-        timeElapsed = 0.0f;
-    }
+    if (isSpacePressed)
         player.move(0.f, -backgroundSpeed * dtSeconds);
-    }
-    else{
+    else
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
-    }
 
     // Update background
     background1.move(-backgroundSpeed * dtSeconds, 0.f);
@@ -160,8 +153,8 @@ void Game::update(sf::Time deltaTime) {
     static float timeElapsed = 0.0f;
     timeElapsed += dtSeconds;
     if (timeElapsed >= 0.1f) {
-        currentRunFrame = (currentRunFrame + 1) % 15;
-        player.setTexture(playerRunTextures[currentRunFrame]);
+        currentFrame = (currentFrame + 1) % 15;
+        player.setTexture(playerTextures[currentFrame]);
         timeElapsed = 0.0f;
     }
 }

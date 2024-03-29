@@ -11,8 +11,7 @@ public:
 
 private:
     sf::RenderWindow window;
-    std::vector<sf::Texture> playerRunTextures;
-    std::vector<sf::Texture> playerJumpTextures;
+    std::vector<sf::Texture> playerTextures;
     sf::Texture backgroundTexture1;
     sf::Texture backgroundTexture2;
     sf::Texture frontgroundTexture1;
@@ -32,10 +31,7 @@ private:
     sf::Clock clock;
     sf::Clock scoreClock;
     int score;
-    int currentRunFrame;
-    int currentJumpFrame;
-    bool isJumping;
-    float timeElapsed = 0.0f;
+    int currentFrame;
 
     void initialize();
     void loadTextures();
