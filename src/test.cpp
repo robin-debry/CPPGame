@@ -30,23 +30,12 @@ int main()
         }
         playerRunTextures.push_back(texture);
     }
-    std::vector<sf::Texture> playerJumpTextures;
-    for (int i = 0; i < 9; ++i) {
-        sf::Texture texture;
-        std::string filename = "../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_";
-            filename += "00" + std::to_string(i) + ".png";
 
-        if (!texture.loadFromFile(filename)) {
-            std::cerr << "Failed to load texture: " << filename << std::endl;
-            return EXIT_FAILURE;
-        }
-        playerJumpTextures.push_back(texture);
-    }
 
     sf::Sprite background1(backgroundTexture1);
     sf::Sprite background2(backgroundTexture2);
     sf::Sprite player;
-    player.setTexture(playerRunTextures[0]);
+    player.setTexture(playerTextures[0]);
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
@@ -64,8 +53,7 @@ int main()
 
     float backgroundSpeed = 600.0f; // Increased background speed
     float gravity = 75.0f;
-
-    float initialYPosition = 600.f; // Initial y position for both rectangles
+    float initialYPosition = 750.f; // Initial y position for both rectangles
 
     
 
@@ -78,6 +66,11 @@ int main()
     sf::RectangleShape redRectangle(sf::Vector2f(50.f, 50.f));
     redRectangle.setFillColor(sf::Color::Red);
     redRectangle.setPosition(800.f, initialYPosition + blueRectangle.getSize().y - 50); // Align red below blue
+    policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50); // Align policeman below player
+    policeman.setScale(0.12, 0.12);
+
+    int policemanCurrentFrame = 0;
+    float policemanTimeElapsed = 0.0f;
 
     bool isSpacePressed = false;
     bool gameOver = false; // Flag to track game over state
@@ -86,6 +79,9 @@ int main()
     sf::Clock scoreClock; // Clock to track score increase
 
     int score = 0; // Initialize score
+    // Define animation speed
+    float animationSpeed = 0.1f; // Adjust animation speed as needed
+
 
     // Load font
     sf::Font font;
@@ -104,6 +100,13 @@ int main()
     {
         sf::Time deltaTime = clock.restart();
         float dtSeconds = deltaTime.asSeconds();
+
+        policemanTimeElapsed += dtSeconds;
+    if (policemanTimeElapsed >= animationSpeed) {
+        policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
+        policeman.setTexture(policemanTextures[policemanCurrentFrame]);
+        policemanTimeElapsed = 0.0f;
+    }
 
         sf::Time scoreElapsedTime = scoreClock.getElapsedTime();
         if (scoreElapsedTime.asSeconds() >= 1.0f) { // Increase score every second
@@ -165,6 +168,7 @@ int main()
             return EXIT_FAILURE;
         }
 
+
         sf:: Text GameOver;
         GameOver.setFont(font);
         GameOver.setCharacterSize(50);
@@ -190,7 +194,7 @@ int main()
         window.draw(background1);
         window.draw(background2);
         window.draw(player);
-        window.draw(redRectangle);
+        window.draw(policeman);
 
         // Draw "Game Over" screen if game over
         if (gameOver) {

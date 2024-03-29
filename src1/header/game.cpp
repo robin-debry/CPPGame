@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentRunFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentFrame(0) {
     initialize();
 }
 
@@ -20,6 +20,17 @@ void Game::loadTextures() {
         exit(EXIT_FAILURE);
     }
 
+    // Scale the textures based on the window's dimensions
+    sf::Vector2u windowSize = window.getSize();
+    backgroundTexture1.setSmooth(true);
+    backgroundTexture2.setSmooth(true);
+    frontgroundTexture1.setSmooth(true);
+    frontgroundTexture2.setSmooth(true);
+    backgroundTexture1.setScale(windowSize.x / backgroundTexture1.getSize().x, windowSize.y / backgroundTexture1.getSize().y);
+    backgroundTexture2.setScale(windowSize.x / backgroundTexture2.getSize().x, windowSize.y / backgroundTexture2.getSize().y);
+    frontgroundTexture1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
+    frontgroundTexture2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
+
     for (int i = 0; i < 15; ++i) {
         sf::Texture texture;
         std::string filename = "../Images/The Black Thief Slim Version/Animations/Run/run_";
@@ -30,19 +41,7 @@ void Game::loadTextures() {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
-        playerRunTextures.push_back(texture);
-    }
-
-    for (int i = 0; i < 9; ++i) {
-        sf::Texture texture;
-        std::string filename = "../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_";
-        filename += "00" + std::to_string(i) + ".png";
-
-        if (!texture.loadFromFile(filename)) {
-            std::cerr << "Failed to load player texture: " << filename << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        playerJumpTextures.push_back(texture);
+        playerTextures.push_back(texture);
     }
 }
 
