@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), initialYPosition(720.f), isSpacePressed(false), score(0), currentRunFrame(0) {
     initialize();
 }
 
@@ -41,7 +41,7 @@ void Game::loadTextures() {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
-        playerTextures.push_back(texture);
+        playerRunTextures.push_back(texture);
     }
 }
 
