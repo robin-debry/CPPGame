@@ -20,12 +20,14 @@ private:
     sf::Texture backgroundTexture2;
     sf::Texture frontgroundTexture1;
     sf::Texture frontgroundTexture2;
+    sf::Texture coinTexture;
     sf::Sprite background1;
     sf::Sprite background2;
     sf::Sprite frontground1;
     sf::Sprite frontground2;
     sf::Sprite policeman;
     sf::Sprite player;
+    sf::Sprite coin;
     sf::RectangleShape blueRectangle;
     sf::RectangleShape redRectangle;
     sf::Font font;
@@ -39,6 +41,7 @@ private:
     sf::Clock clock;
     sf::Clock scoreClock;
     int score;
+    int Coins;
     int currentFrame;
     bool isJumping;
     float timeElapsed = 0.0f;

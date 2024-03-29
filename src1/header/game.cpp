@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), currentFrame(0) {
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0),Coins(0), currentFrame(0) {
     initialYPosition = window.getSize().y * 0.68f;
     initialize();
 }
@@ -69,6 +69,10 @@ void Game::loadTextures() {
         }
         policemanTextures.push_back(texture);
     }
+    if (!coinTexture.loadFromFile("../Images/money/money.png")) {
+        std::cerr << "Failed to load coin texture." << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 // Setup initial scene elements
@@ -82,6 +86,8 @@ void Game::setupScene() {
     background2.setTexture(backgroundTexture2);
 
     player.setTexture(playerRunTextures[0]);
+    coin.setTexture(coinTexture);
+
 
     player.setTexture(playerTextures[0]);
     policeman.setTexture(policemanTextures[0]);
@@ -101,12 +107,17 @@ void Game::setupScene() {
     policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50); // Align policeman below player
     policeman.setScale(0.12, 0.12);
 
+    coin.setPosition(400.f, 400.f);
+    coin.setScale(0.1, 0.1);
+
     frontground1.setTexture(frontgroundTexture1);
     frontground2.setTexture(frontgroundTexture2);
     frontground1.setScale(scaleFactor, scaleFactor);
     frontground2.setScale(scaleFactor, scaleFactor);
     frontground1.setPosition(0.f, 0.f);
     frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
+
+    
 }
 
 // Main game loop
@@ -214,6 +225,8 @@ void Game::render() {
     window.draw(background2);
     window.draw(player);
     window.draw(policeman);
+    window.draw(coin);
+
     window.draw(frontground1);
     window.draw(frontground2);
 
