@@ -65,14 +65,28 @@ int main()
 
     sf::RectangleShape redRectangle(sf::Vector2f(50.f, 50.f));
     redRectangle.setFillColor(sf::Color::Red);
-    redRectangle.setPosition(800.f, initialYPosition + blueRectangle.getSize().y -50); // Align red below blue
+    redRectangle.setPosition(800.f, initialYPosition + blueRectangle.getSize().y - 50); // Align red below blue
 
     bool isSpacePressed = false;
+    bool gameOver = false; // Flag to track game over state
 
     sf::Clock clock;
     sf::Clock scoreClock; // Clock to track score increase
 
     int score = 0; // Initialize score
+
+    // Load font
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) {
+        return EXIT_FAILURE;
+    }
+
+    // Text for "Game Over"
+    sf::Text gameOverText;
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(50);
+    gameOverText.setFillColor(sf::Color::White);
+    gameOverText.setString("Game Over");
 
     while (window.isOpen())
     {
@@ -94,7 +108,10 @@ int main()
                 isSpacePressed = true;
             else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
                 isSpacePressed = false;
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter && gameOver)
+                gameOver = false; // Reset game over state when Enter is pressed
         }
+
 
         if (isSpacePressed)
             // blueRectangle.move(0.f, -backgroundSpeed * dtSeconds); // Move the blue rectangle upwards
@@ -103,18 +120,20 @@ int main()
             // blueRectangle.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds); // Move the blue rectangle downwards with gravity
             player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds); // Move the blue rectangle downwards with gravity
 
-        redRectangle.move(-backgroundSpeed * dtSeconds, 0.f); // Move the red rectangle towards the left
 
-        background1.move(-backgroundSpeed * dtSeconds, 0.f);
-        background2.move(-backgroundSpeed * dtSeconds, 0.f);
+            redRectangle.move(-backgroundSpeed * dtSeconds, 0.f); // Move the red rectangle towards the left
 
-        if (background1.getPosition().x + background1.getGlobalBounds().width < 0) {
-            background1.setPosition(background2.getPosition().x + background2.getGlobalBounds().width, 0.f);
-        }
+            background1.move(-backgroundSpeed * dtSeconds, 0.f);
+            background2.move(-backgroundSpeed * dtSeconds, 0.f);
 
-        if (background2.getPosition().x + background2.getGlobalBounds().width < 0) {
-            background2.setPosition(background1.getPosition().x + background1.getGlobalBounds().width, 0.f);
-        }
+            if (background1.getPosition().x + background1.getGlobalBounds().width < 0) {
+                background1.setPosition(background2.getPosition().x + background2.getGlobalBounds().width, 0.f);
+            }
+
+            if (background2.getPosition().x + background2.getGlobalBounds().width < 0) {
+                background2.setPosition(background1.getPosition().x + background1.getGlobalBounds().width, 0.f);
+            }
+
 
         // if (blueRectangle.getPosition().y > initialYPosition) {
         //     blueRectangle.setPosition(blueRectangle.getPosition().x, initialYPosition);
@@ -144,6 +163,7 @@ int main()
 
         if (redRectangle.getPosition().x < 0) {
             window.draw(GameOver); // Reset the red rectangle position when it goes out of the window
+
         }
 
         static float timeElapsed = 0.0f;
@@ -160,14 +180,25 @@ int main()
         window.draw(player);
         window.draw(redRectangle);
 
+        // Draw "Game Over" screen if game over
+        if (gameOver) {
+            // Draw black screen
+            sf::RectangleShape blackScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
+            blackScreen.setFillColor(sf::Color::Black);
+            window.draw(blackScreen);
 
+            // Draw "Game Over" message in the middle of the window
+            gameOverText.setPosition(window.getSize().x / 2 - gameOverText.getLocalBounds().width / 2, window.getSize().y / 2 - gameOverText.getLocalBounds().height / 2);
+            window.draw(gameOverText);
+        }
+
+        // Draw score
         sf::Text scoreText;
         scoreText.setFont(font);
         scoreText.setCharacterSize(24);
         scoreText.setFillColor(sf::Color::White);
         scoreText.setPosition(10, 10);
         scoreText.setString("Score: " + std::to_string(score));
-
         window.draw(scoreText);
 
         window.display();
