@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), currentFrame(0) {
+               backgroundSpeed(window.getSize().x * 0.75f), gravity(window.getSize().y * 0.125f), isSpacePressed(false), score(0), currentFrame(0) {
     initialYPosition = window.getSize().y * 0.68f;
     initialize();
 }
@@ -21,6 +21,17 @@ void Game::loadTextures() {
         exit(EXIT_FAILURE);
     }
 
+    // Scale the textures based on the window's dimensions
+    sf::Vector2u windowSize = window.getSize();
+    backgroundTexture1.setSmooth(true);
+    backgroundTexture2.setSmooth(true);
+    frontgroundTexture1.setSmooth(true);
+    frontgroundTexture2.setSmooth(true);
+    backgroundTexture1.setScale(windowSize.x / backgroundTexture1.getSize().x, windowSize.y / backgroundTexture1.getSize().y);
+    backgroundTexture2.setScale(windowSize.x / backgroundTexture2.getSize().x, windowSize.y / backgroundTexture2.getSize().y);
+    frontgroundTexture1.setScale(windowSize.x / frontgroundTexture1.getSize().x, windowSize.y / frontgroundTexture1.getSize().y);
+    frontgroundTexture2.setScale(windowSize.x / frontgroundTexture2.getSize().x, windowSize.y / frontgroundTexture2.getSize().y);
+
     for (int i = 0; i < 15; ++i) {
         sf::Texture texture;
         std::string filename = "../Images/The Black Thief Slim Version/Animations/Run/run_";
@@ -31,6 +42,10 @@ void Game::loadTextures() {
             std::cerr << "Failed to load player texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
+
+        // Scale the player texture based on the window's dimensions
+        texture.setSmooth(true);
+        texture.setScale(windowSize.x / texture.getSize().x, windowSize.y / texture.getSize().y);
         playerTextures.push_back(texture);
     }
 }
