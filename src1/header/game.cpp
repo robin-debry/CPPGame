@@ -130,7 +130,7 @@ void Game::setupScene()
 
     player.setPosition(200.f, initialYPosition);
     player.setScale(0.14, 0.14);
-    policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50); // Align policeman below player
+    policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50);
     policeman.setScale(0.12, 0.12);
 
     laser.setPosition(400.f, 400.f);
@@ -287,8 +287,6 @@ void Game::update(sf::Time deltaTime) {
         laser.setTexture(laserTextures[currentLaserFrame]);
         laserTimeElapsed = 0.0f;
     }
-
-    // Update coin position
     // Update coin position
     coin.move(-backgroundSpeed * dtSeconds, 0.f);
     if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
@@ -301,7 +299,7 @@ void Game::update(sf::Time deltaTime) {
     if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
     {
         score += 100;                                                                                                          // Increase score
-        Coins -= 100;                                                                                                          // Decrease coins count
+        Coins += 100;                                                                                                          // Decrease coins count
         coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
     }
 }
@@ -312,8 +310,44 @@ void Game::render()
     window.clear();
     window.draw(background1);
     window.draw(background2);
-    window.draw(player);
     window.draw(policeman);
+
+// Define the size of the smaller player hitbox
+float playerHitboxWidth = player.getGlobalBounds().width * 0.3f;
+float playerHitboxHeight = player.getGlobalBounds().height * 0.7;
+
+// Define the position of the hitbox relative to the player sprite
+float playerHitboxLeft = player.getGlobalBounds().left + (player.getGlobalBounds().width - playerHitboxWidth) / 2.5f;
+float playerHitboxTop = player.getGlobalBounds().top + (player.getGlobalBounds().height - playerHitboxHeight) / 2.0f;
+
+// Create the smaller hitbox rectangle
+sf::RectangleShape playerHitboxShape(sf::Vector2f(playerHitboxWidth, playerHitboxHeight));
+playerHitboxShape.setPosition(playerHitboxLeft, playerHitboxTop);
+playerHitboxShape.setFillColor(sf::Color::Transparent);
+playerHitboxShape.setOutlineColor(sf::Color::White);
+playerHitboxShape.setOutlineThickness(2.f);
+
+// Define the size of the coin hitbox
+float coinHitboxWidth = coin.getGlobalBounds().width * 0.6f; // Adjust this value for accuracy
+float coinHitboxHeight = coin.getGlobalBounds().height * 0.6f; // Adjust this value for accuracy
+
+// Define the position of the coin hitbox relative to the coin sprite
+float coinHitboxLeft = coin.getGlobalBounds().left + (coin.getGlobalBounds().width - coinHitboxWidth) / 2.0f;
+float coinHitboxTop = coin.getGlobalBounds().top + (coin.getGlobalBounds().height - coinHitboxHeight) / 2.0f;
+
+// Create the coin hitbox rectangle
+sf::RectangleShape coinHitboxShape(sf::Vector2f(coinHitboxWidth, coinHitboxHeight));
+coinHitboxShape.setPosition(coinHitboxLeft, coinHitboxTop);
+coinHitboxShape.setFillColor(sf::Color::Transparent);
+coinHitboxShape.setOutlineColor(sf::Color::Red); // Set outline color to red for visibility
+coinHitboxShape.setOutlineThickness(2.f);
+
+// Draw the coin hitbox
+    window.draw(coinHitboxShape);
+    window.draw(playerHitboxShape);
+    
+    // Draw the player sprite
+    window.draw(player);
     window.draw(coin);
     window.draw(laser);
 
@@ -333,19 +367,8 @@ void Game::render()
     coinsText.setFont(font);
     coinsText.setCharacterSize(24);
     coinsText.setFillColor(sf::Color::White);
-    // Adjust position to the top right corner
-    coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 100, 10);
+    coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 80, 10);
     coinsText.setString(std::to_string(Coins) + " $");
-
-    // If score is negative, display the absolute value
-    if (Coins < 0)
-    {
-        coinsText.setString(std::to_string(-Coins) + " $");
-    }
-    else
-    {
-        coinsText.setString(std::to_string(Coins) + " $");
-    }
 
     window.draw(scoreText);
     window.draw(coinsText);
