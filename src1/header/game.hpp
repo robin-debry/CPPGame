@@ -16,6 +16,7 @@ private:
     sf::Texture playerFallTextures;
     std::vector<sf::Texture> playerTextures;
     std::vector<sf::Texture> policemanTextures;
+    std::vector<sf::Texture> laserTextures;
     sf::Texture backgroundTexture1;
     sf::Texture backgroundTexture2;
     sf::Texture frontgroundTexture1;
@@ -28,6 +29,7 @@ private:
     sf::Sprite policeman;
     sf::Sprite player;
     sf::Sprite coin;
+    sf::Sprite laser;
     sf::RectangleShape blueRectangle;
     sf::RectangleShape redRectangle;
     sf::Font font;
@@ -42,7 +44,9 @@ private:
     sf::Clock scoreClock;
     int score;
     int Coins;
-    int currentFrame;
+    int currentRunFrame;
+    int currentLaserFrame;
+    float laserTimeElapsed = 0.0f;
     bool isJumping;
     float timeElapsed = 0.0f;
 

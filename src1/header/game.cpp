@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentFrame(0)
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentRunFrame(0), currentLaserFrame(0)
 {
     initialYPosition = window.getSize().y * 0.68f;
     initialize();
@@ -51,6 +51,21 @@ void Game::loadTextures()
         }
         playerRunTextures.push_back(texture);
     }
+
+    for (int i = 0; i < 3; i++)
+    {
+        sf::Texture texture;
+        std::string filename = "../Images/laser/laser_";
+        filename += (i < 3) ? "00" + std::to_string(i) : "0" + std::to_string(i);
+        filename += ".png";
+
+        if (!texture.loadFromFile(filename))
+        {
+            std::cerr << "Failed to load laser texture: " << filename << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        laserTextures.push_back(texture);
+    }
     if (!playerJumpTextures.loadFromFile("../Images/The Black Thief Slim Version/Animations/Jump Start/jump_start_009.png"))
     {
         std::cerr << "Failed to load player jump texture." << std::endl;
@@ -82,6 +97,7 @@ void Game::loadTextures()
         std::cerr << "Failed to load coin texture." << std::endl;
         exit(EXIT_FAILURE);
     }
+
 }
 
 // Setup initial scene elements
@@ -101,6 +117,7 @@ void Game::setupScene()
 
     player.setTexture(playerTextures[0]);
     policeman.setTexture(policemanTextures[0]);
+    laser.setTexture(laserTextures[0]);
 
     float scaleX = static_cast<float>(window.getSize().x) / background1.getTexture()->getSize().x;
     float scaleY = static_cast<float>(window.getSize().y) / background1.getTexture()->getSize().y;
@@ -115,6 +132,8 @@ void Game::setupScene()
     player.setScale(0.14, 0.14);
     policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50); // Align policeman below player
     policeman.setScale(0.12, 0.12);
+
+    laser.setPosition(400.f, 400.f);
 
     coin.setPosition(400.f, 400.f);
     coin.setScale(0.1, 0.1);
@@ -256,9 +275,17 @@ void Game::update(sf::Time deltaTime) {
     timeElapsed += dtSeconds;
     if (timeElapsed >= 0.1f)
     {
-        currentFrame = (currentFrame + 1) % 15;
-        player.setTexture(playerRunTextures[currentFrame]);
+        currentRunFrame = (currentRunFrame + 1) % 15;
+        player.setTexture(playerRunTextures[currentRunFrame]);
         timeElapsed = 0.0f;
+    }
+
+   laserTimeElapsed += dtSeconds;
+    if (laserTimeElapsed >= 1.6f)
+    {
+        currentLaserFrame = (currentLaserFrame + 1) % 3;
+        laser.setTexture(laserTextures[currentLaserFrame]);
+        laserTimeElapsed = 0.0f;
     }
 
     // Update coin position
@@ -288,6 +315,7 @@ void Game::render()
     window.draw(player);
     window.draw(policeman);
     window.draw(coin);
+    window.draw(laser);
 
     window.draw(frontground1);
     window.draw(frontground2);
