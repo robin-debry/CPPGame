@@ -97,7 +97,6 @@ void Game::loadTextures()
         std::cerr << "Failed to load coin texture." << std::endl;
         exit(EXIT_FAILURE);
     }
-
 }
 
 // Setup initial scene elements
@@ -147,8 +146,10 @@ void Game::setupScene()
 }
 
 // Main game loop
-int Game::run() {
-    while (window.isOpen()) { 
+int Game::run()
+{
+    while (window.isOpen())
+    {
 
         sf::Time deltaTime = clock.restart();
         processEvents();
@@ -174,7 +175,8 @@ void Game::processEvents()
 }
 
 // Update game state
-void Game::update(sf::Time deltaTime) {
+void Game::update(sf::Time deltaTime)
+{
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
     policemanTimeElapsed += dtSeconds;
@@ -206,26 +208,26 @@ void Game::update(sf::Time deltaTime) {
     else
         player.move(0.f, backgroundSpeed * dtSeconds + gravity * dtSeconds);
 
-    
     // Update policeman position and animation
     policemanTimeElapsed += dtSeconds;
-    if (policemanTimeElapsed >= animationSpeed) {
+    if (policemanTimeElapsed >= animationSpeed)
+    {
         policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
         policeman.setTexture(policemanTextures[policemanCurrentFrame]);
         policemanTimeElapsed = 0.0f;
     }
 
     // Move policeman from right to left
-    float policemanSpeed = 700.0f; // Adjust speed as needed
+    float policemanSpeed = 700.0f;          // Adjust speed as needed
     float dx = -policemanSpeed * dtSeconds; // Calculate horizontal movement
-    policeman.move(dx, 0); // Move the policeman horizontally
+    policeman.move(dx, 0);                  // Move the policeman horizontally
 
     // Check if policeman has moved out of the window
-    if (policeman.getPosition().x + policeman.getLocalBounds().width < 0) {
+    if (policeman.getPosition().x + policeman.getLocalBounds().width < 0)
+    {
         // Reset policeman position to the right side of the window
         policeman.setPosition(window.getSize().x, initialYPosition + blueRectangle.getSize().y - 50);
     }
-   
 
     // Update background
     background1.move(-backgroundSpeed * dtSeconds, 0.f);
@@ -280,13 +282,14 @@ void Game::update(sf::Time deltaTime) {
         timeElapsed = 0.0f;
     }
 
-   laserTimeElapsed += dtSeconds;
+    laserTimeElapsed += dtSeconds;
     if (laserTimeElapsed >= 1.6f)
     {
         currentLaserFrame = (currentLaserFrame + 1) % 3;
         laser.setTexture(laserTextures[currentLaserFrame]);
         laserTimeElapsed = 0.0f;
     }
+
     // Update coin position
     coin.move(-backgroundSpeed * dtSeconds, 0.f);
     if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
@@ -295,8 +298,13 @@ void Game::update(sf::Time deltaTime) {
         coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
     }
 
-    // Check for collision between player and coin
-    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
+    // Check for collision between player and coin if they are close enough
+    sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
+    sf::Vector2f coinCenter = coin.getPosition() + sf::Vector2f(coin.getGlobalBounds().width / 2, coin.getGlobalBounds().height / 2);
+    float distance = std::sqrt(std::pow(playerCenter.x - coinCenter.x, 2) + std::pow(playerCenter.y - coinCenter.y, 2));
+    float minCollisionDistance = 75.0f; // Adjust the distance as needed
+
+    if (distance < minCollisionDistance)
     {
         score += 100;                                                                                                          // Increase score
         Coins += 100;                                                                                                          // Decrease coins count
@@ -312,40 +320,6 @@ void Game::render()
     window.draw(background2);
     window.draw(policeman);
 
-// Define the size of the smaller player hitbox
-float playerHitboxWidth = player.getGlobalBounds().width * 0.3f;
-float playerHitboxHeight = player.getGlobalBounds().height * 0.7;
-
-// Define the position of the hitbox relative to the player sprite
-float playerHitboxLeft = player.getGlobalBounds().left + (player.getGlobalBounds().width - playerHitboxWidth) / 2.5f;
-float playerHitboxTop = player.getGlobalBounds().top + (player.getGlobalBounds().height - playerHitboxHeight) / 2.0f;
-
-// Create the smaller hitbox rectangle
-sf::RectangleShape playerHitboxShape(sf::Vector2f(playerHitboxWidth, playerHitboxHeight));
-playerHitboxShape.setPosition(playerHitboxLeft, playerHitboxTop);
-playerHitboxShape.setFillColor(sf::Color::Transparent);
-playerHitboxShape.setOutlineColor(sf::Color::White);
-playerHitboxShape.setOutlineThickness(2.f);
-
-// Define the size of the coin hitbox
-float coinHitboxWidth = coin.getGlobalBounds().width * 0.6f; // Adjust this value for accuracy
-float coinHitboxHeight = coin.getGlobalBounds().height * 0.6f; // Adjust this value for accuracy
-
-// Define the position of the coin hitbox relative to the coin sprite
-float coinHitboxLeft = coin.getGlobalBounds().left + (coin.getGlobalBounds().width - coinHitboxWidth) / 2.0f;
-float coinHitboxTop = coin.getGlobalBounds().top + (coin.getGlobalBounds().height - coinHitboxHeight) / 2.0f;
-
-// Create the coin hitbox rectangle
-sf::RectangleShape coinHitboxShape(sf::Vector2f(coinHitboxWidth, coinHitboxHeight));
-coinHitboxShape.setPosition(coinHitboxLeft, coinHitboxTop);
-coinHitboxShape.setFillColor(sf::Color::Transparent);
-coinHitboxShape.setOutlineColor(sf::Color::Red); // Set outline color to red for visibility
-coinHitboxShape.setOutlineThickness(2.f);
-
-// Draw the coin hitbox
-    window.draw(coinHitboxShape);
-    window.draw(playerHitboxShape);
-    
     // Draw the player sprite
     window.draw(player);
     window.draw(coin);
