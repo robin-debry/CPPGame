@@ -16,6 +16,7 @@ private:
     sf::Texture playerFallTextures;
     std::vector<sf::Texture> playerTextures;
     std::vector<sf::Texture> policemanTextures;
+    std::vector<sf::Texture> reversePolicemanTextures;
     std::vector<sf::Texture> laserTextures;
     sf::Texture backgroundTexture1;
     sf::Texture backgroundTexture2;
@@ -27,6 +28,7 @@ private:
     sf::Sprite frontground1;
     sf::Sprite frontground2;
     sf::Sprite policeman;
+    sf::Sprite reversePoliceman;
     sf::Sprite player;
     sf::Sprite coin;
     sf::Sprite laser;
@@ -36,6 +38,8 @@ private:
     float animationSpeed = 0.1f;
     int policemanCurrentFrame;
     float policemanTimeElapsed;
+    int reversePolicemanCurrentFrame;
+    float reversePolicemanTimeElapsed;
     float backgroundSpeed;
     float gravity;
     float initialYPosition;

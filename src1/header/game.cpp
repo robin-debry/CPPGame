@@ -77,7 +77,22 @@ void Game::loadTextures()
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
+/////////////
+    for (int i = 0; i < 7; ++i)
+    {
+        sf::Texture texture;
+        std::string filename = "../Images/Policeman/1/walk_reverse/1_police_Walk_";
+        filename += (i < 7) ? "00" + std::to_string(i) : "0" + std::to_string(i);
+        filename += ".png";
 
+        if (!texture.loadFromFile(filename))
+        {
+            std::cerr << "Failed to load player texture: " << filename << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        reversePolicemanTextures.push_back(texture);
+    }
+/////////////
     for (int i = 0; i < 7; ++i)
     {
         sf::Texture texture;
@@ -91,7 +106,10 @@ void Game::loadTextures()
             exit(EXIT_FAILURE);
         }
         policemanTextures.push_back(texture);
-    }
+    }    
+
+
+
     if (!coinTexture.loadFromFile("../Images/money/money.png"))
     {
         std::cerr << "Failed to load coin texture." << std::endl;
@@ -114,6 +132,7 @@ void Game::setupScene()
     player.setTexture(playerRunTextures[0]);
     coin.setTexture(coinTexture);
 
+    reversePoliceman.setTexture(reversePolicemanTextures[0]);
     player.setTexture(playerTextures[0]);
     policeman.setTexture(policemanTextures[0]);
     laser.setTexture(laserTextures[0]);
@@ -131,6 +150,8 @@ void Game::setupScene()
     player.setScale(0.14, 0.14);
     policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50);
     policeman.setScale(0.12, 0.12);
+    reversePoliceman.setPosition(800.f, initialYPosition + 85  ); // Align policeman below player
+    reversePoliceman.setScale(0.12, 0.12);
 
     laser.setPosition(400.f, 400.f);
 
@@ -179,12 +200,21 @@ void Game::update(sf::Time deltaTime)
 {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
+
     policemanTimeElapsed += dtSeconds;
     if (policemanTimeElapsed >= animationSpeed)
     {
         policemanCurrentFrame = (policemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
         policeman.setTexture(policemanTextures[policemanCurrentFrame]);
         policemanTimeElapsed = 0.0f;
+    }
+
+    reversePolicemanTimeElapsed += dtSeconds;
+    if (reversePolicemanTimeElapsed >= animationSpeed)
+    {
+        reversePolicemanCurrentFrame = (reversePolicemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
+        reversePoliceman.setTexture(reversePolicemanTextures[reversePolicemanCurrentFrame]);
+        reversePolicemanTimeElapsed = 0.0f;
     }
 
     if (isSpacePressed)
@@ -217,6 +247,13 @@ void Game::update(sf::Time deltaTime)
         policemanTimeElapsed = 0.0f;
     }
 
+        reversePolicemanTimeElapsed += dtSeconds;
+    if (reversePolicemanTimeElapsed >= animationSpeed) {
+        reversePolicemanCurrentFrame = (reversePolicemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
+        reversePoliceman.setTexture(reversePolicemanTextures[reversePolicemanCurrentFrame]);
+        reversePolicemanTimeElapsed = 0.0f;
+    }
+
     // Move policeman from right to left
     float policemanSpeed = 700.0f;          // Adjust speed as needed
     float dx = -policemanSpeed * dtSeconds; // Calculate horizontal movement
@@ -227,6 +264,17 @@ void Game::update(sf::Time deltaTime)
     {
         // Reset policeman position to the right side of the window
         policeman.setPosition(window.getSize().x, initialYPosition + blueRectangle.getSize().y - 50);
+    }
+
+   
+    float reversePolicemanSpeed = -200.0f; // Adjust speed as needed
+    float ax = reversePolicemanSpeed * dtSeconds; // Calculate horizontal movement
+    reversePoliceman.move(ax, 0); // Move the policeman horizontally
+
+    // Check if policeman has moved out of the window
+    if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0) {
+        // Reset policeman position to the right side of the window
+        reversePoliceman.setPosition(window.getSize().x, initialYPosition + 85);
     }
 
     // Update background
@@ -322,6 +370,9 @@ void Game::render()
 
     // Draw the player sprite
     window.draw(player);
+
+    window.draw(reversePoliceman);
+
     window.draw(coin);
     window.draw(laser);
 
