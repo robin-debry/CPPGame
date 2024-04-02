@@ -55,7 +55,7 @@ void Game::loadTextures()
     for (int i = 0; i < 3; i++)
     {
         sf::Texture texture;
-        std::string filename = "../Images/laser/laser_";
+        std::string filename = "../Images/laser/laserTest_";
         filename += (i < 3) ? "00" + std::to_string(i) : "0" + std::to_string(i);
         filename += ".png";
 
@@ -153,7 +153,7 @@ void Game::setupScene()
     reversePoliceman.setPosition(800.f, initialYPosition + 85  ); // Align policeman below player
     reversePoliceman.setScale(0.12, 0.12);
 
-    laser.setPosition(400.f, 400.f);
+    laser.setPosition(0.f, 400.f);
 
     coin.setPosition(400.f, 400.f);
     coin.setScale(0.1, 0.1);
@@ -353,6 +353,16 @@ void Game::update(sf::Time deltaTime)
     float minCollisionDistance = 75.0f; // Adjust the distance as needed
 
     if (distance < minCollisionDistance)
+
+    if (player.getGlobalBounds().intersects(laser.getGlobalBounds()))
+    {
+        // pause the game
+        //window.close();
+        laser.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(laser.getGlobalBounds().height))); // Reset coin position
+    }
+
+    // Check for collision between player and coin
+    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
     {
         score += 100;                                                                                                          // Increase score
         Coins += 100;                                                                                                          // Decrease coins count
