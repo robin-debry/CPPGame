@@ -3,7 +3,7 @@
 
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
-               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentRunFrame(0), currentLaserFrame(0)
+               backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentRunFrame(0), currentLaserFrame(0), pause(false)
 {
     initialYPosition = window.getSize().y * 0.68f;
     initialize();
@@ -77,7 +77,7 @@ void Game::loadTextures()
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
-/////////////
+
     for (int i = 0; i < 7; ++i)
     {
         sf::Texture texture;
@@ -92,7 +92,6 @@ void Game::loadTextures()
         }
         reversePolicemanTextures.push_back(texture);
     }
-/////////////
     for (int i = 0; i < 7; ++i)
     {
         sf::Texture texture;
@@ -106,9 +105,7 @@ void Game::loadTextures()
             exit(EXIT_FAILURE);
         }
         policemanTextures.push_back(texture);
-    }    
-
-
+    }
 
     if (!coinTexture.loadFromFile("../Images/money/money.png"))
     {
@@ -130,7 +127,10 @@ void Game::setupScene()
     background2.setTexture(backgroundTexture2);
 
     player.setTexture(playerRunTextures[0]);
-    coin.setTexture(coinTexture);
+    for (sf::Sprite &coin : coins)
+    {
+        coin.setTexture(coinTexture);
+    }
 
     reversePoliceman.setTexture(reversePolicemanTextures[0]);
     player.setTexture(playerTextures[0]);
@@ -150,13 +150,10 @@ void Game::setupScene()
     player.setScale(0.14, 0.14);
     policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50);
     policeman.setScale(0.12, 0.12);
-    reversePoliceman.setPosition(800.f, initialYPosition + 85  ); // Align policeman below player
+    reversePoliceman.setPosition(800.f, initialYPosition + 85); // Align policeman below player
     reversePoliceman.setScale(0.12, 0.12);
 
     laser.setPosition(0.f, 400.f);
-
-    coin.setPosition(400.f, 400.f);
-    coin.setScale(0.1, 0.1);
 
     frontground1.setTexture(frontgroundTexture1);
     frontground2.setTexture(frontgroundTexture2);
@@ -164,6 +161,16 @@ void Game::setupScene()
     frontground2.setScale(scaleFactor, scaleFactor);
     frontground1.setPosition(0.f, 0.f);
     frontground2.setPosition(frontground1.getPosition().x + frontground1.getGlobalBounds().width, 0.f);
+
+    // Initialize coins
+    for (int i = 0; i < 20; ++i)
+    { // Create 20 coins
+        sf::Sprite coinSprite;
+        coinSprite.setTexture(coinTexture);            // Set coin texture
+        coinSprite.setPosition(400.f + i * 50, 400.f); // Adjust the initial position as needed
+        coinSprite.setScale(0.1f, 0.1f);               // Adjust scale as needed
+        coins.push_back(coinSprite);                   // Add coin to vector
+    }
 }
 
 // Main game loop
@@ -192,12 +199,17 @@ void Game::processEvents()
             isSpacePressed = true;
         else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
             isSpacePressed = false;
+        else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+            pause = !pause;
     }
 }
 
 // Update game state
 void Game::update(sf::Time deltaTime)
 {
+    if (pause)
+        return;
+
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
 
@@ -247,8 +259,9 @@ void Game::update(sf::Time deltaTime)
         policemanTimeElapsed = 0.0f;
     }
 
-        reversePolicemanTimeElapsed += dtSeconds;
-    if (reversePolicemanTimeElapsed >= animationSpeed) {
+    reversePolicemanTimeElapsed += dtSeconds;
+    if (reversePolicemanTimeElapsed >= animationSpeed)
+    {
         reversePolicemanCurrentFrame = (reversePolicemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
         reversePoliceman.setTexture(reversePolicemanTextures[reversePolicemanCurrentFrame]);
         reversePolicemanTimeElapsed = 0.0f;
@@ -266,13 +279,13 @@ void Game::update(sf::Time deltaTime)
         policeman.setPosition(window.getSize().x, initialYPosition + blueRectangle.getSize().y - 50);
     }
 
-   
-    float reversePolicemanSpeed = -200.0f; // Adjust speed as needed
+    float reversePolicemanSpeed = -200.0f;        // Adjust speed as needed
     float ax = reversePolicemanSpeed * dtSeconds; // Calculate horizontal movement
-    reversePoliceman.move(ax, 0); // Move the policeman horizontally
+    reversePoliceman.move(ax, 0);                 // Move the policeman horizontally
 
     // Check if policeman has moved out of the window
-    if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0) {
+    if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0)
+    {
         // Reset policeman position to the right side of the window
         reversePoliceman.setPosition(window.getSize().x, initialYPosition + 85);
     }
@@ -338,35 +351,28 @@ void Game::update(sf::Time deltaTime)
         laserTimeElapsed = 0.0f;
     }
 
-    // Update coin position
-    coin.move(-backgroundSpeed * dtSeconds, 0.f);
-    if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
+    laser.move(0.f, 0.f);
+    if (laser.getPosition().x + laser.getGlobalBounds().width < 0 || laser.getPosition().y > window.getSize().y * 0.68f)
     {
-        // Reset coin position and set a random Y position above the threshold
-        coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
+        laser.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
     }
 
-    // Check for collision between player and coin if they are close enough
-    sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
-    sf::Vector2f coinCenter = coin.getPosition() + sf::Vector2f(coin.getGlobalBounds().width / 2, coin.getGlobalBounds().height / 2);
-    float distance = std::sqrt(std::pow(playerCenter.x - coinCenter.x, 2) + std::pow(playerCenter.y - coinCenter.y, 2));
-    float minCollisionDistance = 75.0f; // Adjust the distance as needed
+    for (sf::Sprite &coin : coins)
+    {
+        // Update coin position
+        coin.move(-backgroundSpeed * deltaTime.asSeconds(), 0.f);
 
-    if (distance < minCollisionDistance)
+        // Reset coin position if it goes out of screen
+        if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
+        {
+            coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300)));
+        }
+    }
 
     if (player.getGlobalBounds().intersects(laser.getGlobalBounds()))
     {
-        // pause the game
-        //window.close();
-        laser.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(laser.getGlobalBounds().height))); // Reset coin position
-    }
-
-    // Check for collision between player and coin
-    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
-    {
-        score += 100;                                                                                                          // Increase score
-        Coins += 100;                                                                                                          // Decrease coins count
-        coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
+        // Pause the game
+        // window.close();
     }
 }
 
@@ -374,18 +380,28 @@ void Game::update(sf::Time deltaTime)
 void Game::render()
 {
     window.clear();
+
+    // Draw background
     window.draw(background1);
     window.draw(background2);
+
+    // Draw policeman
     window.draw(policeman);
-
-    // Draw the player sprite
-    window.draw(player);
-
     window.draw(reversePoliceman);
 
-    window.draw(coin);
+    // Draw player
+    window.draw(player);
+
+    // Draw coins
+    for (const sf::Sprite &coin : coins)
+    {
+        window.draw(coin);
+    }
+
+    // Draw laser
     window.draw(laser);
 
+    // Draw frontground
     window.draw(frontground1);
     window.draw(frontground2);
 
@@ -396,16 +412,16 @@ void Game::render()
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition(10, 10);
     scoreText.setString(std::to_string(score) + "m");
+    window.draw(scoreText);
 
-    // Draw coins
+    // Draw coins count
     sf::Text coinsText;
     coinsText.setFont(font);
     coinsText.setCharacterSize(24);
     coinsText.setFillColor(sf::Color::White);
     coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 80, 10);
     coinsText.setString(std::to_string(Coins) + " $");
-
-    window.draw(scoreText);
     window.draw(coinsText);
+
     window.display();
 }

@@ -4,7 +4,8 @@
 #include <iostream>
 #include <vector>
 
-class Game {
+class Game
+{
 public:
     Game();
     int run();
@@ -30,7 +31,7 @@ private:
     sf::Sprite policeman;
     sf::Sprite reversePoliceman;
     sf::Sprite player;
-    sf::Sprite coin;
+    std::vector<sf::Sprite> coins; // Vector to store coins
     sf::Sprite laser;
     sf::RectangleShape blueRectangle;
     sf::RectangleShape redRectangle;
@@ -53,6 +54,7 @@ private:
     float laserTimeElapsed = 0.0f;
     bool isJumping;
     float timeElapsed = 0.0f;
+    bool pause = false;
 
     void initialize();
     void loadTextures();
