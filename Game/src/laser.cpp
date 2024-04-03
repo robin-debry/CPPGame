@@ -8,7 +8,7 @@ void Laser::loadTextures() {
     for (int i = 0; i < 3; i++)
     {
         sf::Texture texture;
-        std::string filename = "../Images/laser/laserTest_";
+        std::string filename = "assets/images/sprites/laser/laserTest_";
         filename += (i < 3) ? "00" + std::to_string(i) : "0" + std::to_string(i);
         filename += ".png";
 

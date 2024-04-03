@@ -19,6 +19,7 @@ private:
     Background background;
     Player player;
     Coin coin;
+    Laser laser;
     sf::Font font;
     sf::Text scoreText;
     int score;

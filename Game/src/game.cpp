@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Constructor: initialize game window and load resources
-Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window)
+Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window),  laser(window)
 {
     player.initialYPosition = window.getSize().y * 0.69f;
     initialize();
@@ -27,6 +27,7 @@ void Game::loadTextures()
     background.loadTextures();
     player.loadTextures();
     coin.loadTextures();
+    laser.loadTextures();
 }
 
 // Setup initial scene elements
@@ -34,6 +35,7 @@ void Game::setupScene() {
     background.setupScene();
     player.setupScene();
     coin.setupScene();
+    laser.setupScene();
 }
 
 
@@ -57,6 +59,7 @@ void Game::update(sf::Time deltaTime) {
     background.update(deltaTime);
     player.update(deltaTime);
     coin.update(deltaTime);
+    laser.update(deltaTime);
 }
 
 // Render all game objects
@@ -71,6 +74,9 @@ void Game::render() {
 
     // Render coin
     coin.drawCoin();
+
+    // Render laser
+    laser.drawLaser();
 
     player.drawScore();
     coin.drawCoinScore();
