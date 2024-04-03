@@ -53,6 +53,7 @@ private:
     float laserTimeElapsed = 0.0f;
     bool isJumping;
     float timeElapsed = 0.0f;
+    bool pause = false;
 
     void initialize();
     void loadTextures();
