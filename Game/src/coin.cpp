@@ -45,7 +45,7 @@ void Coin::update(sf::Time deltaTime) {
         {
             coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300)));
         }
-        
+
     // Check for collision between player and coin if they are close enough
         sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
         sf::Vector2f coinCenter = coin.getPosition() + sf::Vector2f(coin.getGlobalBounds().width / 2, coin.getGlobalBounds().height / 2);
@@ -76,4 +76,5 @@ void Coin::drawCoinScore() {
     coinsText.setFillColor(sf::Color::White);
     coinsText.setPosition(window.getSize().x - coinsText.getLocalBounds().width - 80, 10);
     coinsText.setString(std::to_string(Coins) + " $");
+    window.draw(coinsText);
 }
