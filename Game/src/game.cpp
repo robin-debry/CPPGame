@@ -72,6 +72,7 @@ void Game::render() {
     // Render coin
     coin.drawCoin();
 
+    player.drawScore();
     coin.drawCoinScore();
 
     // Render frontground

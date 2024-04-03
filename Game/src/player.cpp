@@ -1,7 +1,7 @@
 #include "../include/player.hpp"
 
 Player::Player(sf::RenderWindow& window) : initialYPosition(), gravity(75.0f), 
-                isJumping(false), isSpacePressed(false),
+                isJumping(false), isSpacePressed(false), score(0),
                 timeElapsed(0.0f), window(window), currentRunFrame(0), playerSpeed(600.0f){
     loadTextures();
 
@@ -33,6 +33,12 @@ void Player::loadTextures() {
     if (!playerFallTextures.loadFromFile("assets/images/sprites/The Black Thief Slim Version/Animations/Jump Fall/jump_fall_000.png"))
     {
         std::cerr << "Failed to load player fall texture." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    if (!font.loadFromFile("assets/fonts/arial.ttf"))
+    {
+        std::cerr << "Failed to load font." << std::endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -90,9 +96,27 @@ void Player::update(sf::Time deltaTime) {
         player.setTexture(playerRunTextures[currentRunFrame]);
         timeElapsed = 0.0f;
     }
+
+    sf::Time scoreElapsedTime = scoreClock.getElapsedTime();
+    if (scoreElapsedTime.asSeconds() >= 1.0f)
+    {
+        score += 10;
+        scoreClock.restart();
+    }
 }
 
 void Player::drawPlayer() {
     window.draw(player);
+}
+
+void Player::drawScore() {
+    // Draw score text
+    sf::Text scoreText;
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition(10, 10);
+    scoreText.setString(std::to_string(score) + "m");
+    window.draw(scoreText);
 }
 
