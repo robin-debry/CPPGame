@@ -347,13 +347,6 @@ void Game::update(sf::Time deltaTime)
     }
 
 
-    // Update coin position
-    coin.move(-backgroundSpeed * dtSeconds, 0.f);
-    if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
-    {
-        // Reset coin position and set a random Y position above the threshold
-        coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
-    }
 
     laser.move(0.f, 0.f);
     if (laser.getPosition().x + laser.getGlobalBounds().width < 0 || laser.getPosition().y > window.getSize().y * 0.68f)
@@ -361,8 +354,13 @@ void Game::update(sf::Time deltaTime)
         // Reset coin position and set a random Y position above the threshold
         laser.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
     }
-
-   
+    // Update coin position
+    coin.move(-backgroundSpeed * dtSeconds, 0.f);
+    if (coin.getPosition().x + coin.getGlobalBounds().width < 0 || coin.getPosition().y > window.getSize().y * 0.68f)
+    {
+        // Reset coin position and set a random Y position above the threshold
+        coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300))); // Adjust the random range as needed
+    }
 
     // Check for collision between player and coin if they are close enough
     sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
@@ -377,15 +375,8 @@ void Game::update(sf::Time deltaTime)
         Coins += 100;                                                                                                          // Decrease coins count
         coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
     }
-    // Check for collision between player and coin
-    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
 
-    {
-        // Handle collision
-        score += 100;                                                                                                          // Increase score
-        Coins += 100;                                                                                                          // Decrease coins count
-        coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
-    }
+   
 
     if (player.getGlobalBounds().intersects(laser.getGlobalBounds()))
     {   
