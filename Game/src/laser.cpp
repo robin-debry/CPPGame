@@ -17,12 +17,12 @@ void Laser::loadTextures() {
             std::cerr << "Failed to load laser texture: " << filename << std::endl;
             exit(EXIT_FAILURE);
         }
-        laserTextures.push_back(texture);
+        laserTexture.push_back(texture);
     }
 }
 
 void Laser::setupScene() {
-    laser.setTexture(laserTextures[0]);
+    laser.setTexture(laserTexture[0]);
     laser.setPosition(0.f, 500.f);
 }
 
@@ -30,12 +30,9 @@ void Laser::update(sf::Time deltaTime) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
 
-    
+     laser.setPosition(0.f, 400.f);
 
-    if (laser.getPosition().x > window.getSize().x)
-    {
-        laser.setPosition(0.f, 500.f);
-    }
+
 }
 
 void Laser::drawLaser() {
