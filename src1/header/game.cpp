@@ -77,7 +77,7 @@ void Game::loadTextures()
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
-/////////////
+    /////////////
     for (int i = 0; i < 7; ++i)
     {
         sf::Texture texture;
@@ -92,7 +92,7 @@ void Game::loadTextures()
         }
         reversePolicemanTextures.push_back(texture);
     }
-/////////////
+    /////////////
     for (int i = 0; i < 7; ++i)
     {
         sf::Texture texture;
@@ -106,9 +106,7 @@ void Game::loadTextures()
             exit(EXIT_FAILURE);
         }
         policemanTextures.push_back(texture);
-    }    
-
-
+    }
 
     if (!coinTexture.loadFromFile("../Images/money/money.png"))
     {
@@ -150,7 +148,7 @@ void Game::setupScene()
     player.setScale(0.14, 0.14);
     policeman.setPosition(800.f, 800.f + blueRectangle.getSize().y - 50);
     policeman.setScale(0.12, 0.12);
-    reversePoliceman.setPosition(800.f, initialYPosition + 85  ); // Align policeman below player
+    reversePoliceman.setPosition(800.f, initialYPosition + 85); // Align policeman below player
     reversePoliceman.setScale(0.12, 0.12);
 
     laser.setPosition(0.f, 400.f);
@@ -247,8 +245,9 @@ void Game::update(sf::Time deltaTime)
         policemanTimeElapsed = 0.0f;
     }
 
-        reversePolicemanTimeElapsed += dtSeconds;
-    if (reversePolicemanTimeElapsed >= animationSpeed) {
+    reversePolicemanTimeElapsed += dtSeconds;
+    if (reversePolicemanTimeElapsed >= animationSpeed)
+    {
         reversePolicemanCurrentFrame = (reversePolicemanCurrentFrame + 1) % 7; // Assuming there are 7 frames
         reversePoliceman.setTexture(reversePolicemanTextures[reversePolicemanCurrentFrame]);
         reversePolicemanTimeElapsed = 0.0f;
@@ -266,13 +265,13 @@ void Game::update(sf::Time deltaTime)
         policeman.setPosition(window.getSize().x, initialYPosition + blueRectangle.getSize().y - 50);
     }
 
-   
-    float reversePolicemanSpeed = -200.0f; // Adjust speed as needed
+    float reversePolicemanSpeed = -200.0f;        // Adjust speed as needed
     float ax = reversePolicemanSpeed * dtSeconds; // Calculate horizontal movement
-    reversePoliceman.move(ax, 0); // Move the policeman horizontally
+    reversePoliceman.move(ax, 0);                 // Move the policeman horizontally
 
     // Check if policeman has moved out of the window
-    if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0) {
+    if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0)
+    {
         // Reset policeman position to the right side of the window
         reversePoliceman.setPosition(window.getSize().x, initialYPosition + 85);
     }
@@ -350,20 +349,11 @@ void Game::update(sf::Time deltaTime)
     sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
     sf::Vector2f coinCenter = coin.getPosition() + sf::Vector2f(coin.getGlobalBounds().width / 2, coin.getGlobalBounds().height / 2);
     float distance = std::sqrt(std::pow(playerCenter.x - coinCenter.x, 2) + std::pow(playerCenter.y - coinCenter.y, 2));
-    float minCollisionDistance = 75.0f; // Adjust the distance as needed
+    float minCollisionDistance = 75.0f; // Increased distance
 
     if (distance < minCollisionDistance)
-
-    if (player.getGlobalBounds().intersects(laser.getGlobalBounds()))
     {
-        // pause the game
-        //window.close();
-        laser.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(laser.getGlobalBounds().height))); // Reset coin position
-    }
-
-    // Check for collision between player and coin
-    if (player.getGlobalBounds().intersects(coin.getGlobalBounds()))
-    {
+        // Handle collision
         score += 100;                                                                                                          // Increase score
         Coins += 100;                                                                                                          // Decrease coins count
         coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
