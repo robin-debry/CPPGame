@@ -24,6 +24,7 @@ private:
     sf::Text scoreText;
     int score;
     sf::Clock clock;
+    bool pause;
     
     void initialize();
     void processEvents();

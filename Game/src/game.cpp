@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Constructor: initialize game window and load resources
-Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window),  laser(window)
+Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window),  laser(window), pause(false)
 {
     player.initialYPosition = window.getSize().y * 0.69f;
     initialize();
@@ -51,11 +51,15 @@ void Game::processEvents()
             player.isSpacePressed = true;
         else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
             player.isSpacePressed = false;
+        else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+            pause = !pause;
     }
 }
 
 // Update game state
 void Game::update(sf::Time deltaTime) {
+    if (pause)
+        return;
     background.update(deltaTime);
     player.update(deltaTime);
     coin.update(deltaTime);

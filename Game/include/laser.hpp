@@ -24,9 +24,8 @@ public:
 private:
 
     sf::RenderWindow& window;
-
     sf::Clock clock;
-    std::vector<sf::Texture> laserTexture;
+    std::vector<sf::Texture> laserTextures;
     sf::Sprite laser;
 
     float laserSpeed;
