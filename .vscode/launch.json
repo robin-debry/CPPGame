@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/RaphaelDESCAMPS/Desktop/CPPGame/src1",
-      "program": "c:/Users/RaphaelDESCAMPS/Desktop/CPPGame/src1/build/Debug/outDebug",
+      "cwd": "c:/Users/HabiCAILLEAU/Documents/GitHub/CPPGame/src1/header",
+      "program": "c:/Users/HabiCAILLEAU/Documents/GitHub/CPPGame/src1/header/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
