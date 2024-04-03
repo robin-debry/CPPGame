@@ -367,18 +367,6 @@ void Game::update(sf::Time deltaTime)
         {
             coin.setPosition(window.getSize().x, std::max(0.f, window.getSize().y * 0.68f - static_cast<float>(rand() % 300)));
         }
-
-        // Check for collision between player and coin if they are close enough
-        sf::Vector2f playerCenter = player.getPosition() + sf::Vector2f(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
-        sf::Vector2f coinCenter = coin.getPosition() + sf::Vector2f(coin.getGlobalBounds().width / 2, coin.getGlobalBounds().height / 2);
-        float distance = std::sqrt(std::pow(playerCenter.x - coinCenter.x, 2) + std::pow(playerCenter.y - coinCenter.y, 2));
-        float minCollisionDistance = 75.0f; // Increased distance
-
-        if (distance < minCollisionDistance)
-        {                                                                                                        // Increase score
-            Coins += 100;                                                                                                            // Increase coins count
-            coin.setPosition(window.getSize().x, rand() % (window.getSize().y - static_cast<int>(coin.getGlobalBounds().height))); // Reset coin position
-        }
     }
 
     if (player.getGlobalBounds().intersects(laser.getGlobalBounds()))
