@@ -5,6 +5,7 @@
 #include "background.hpp"
 #include "player.hpp"
 #include "coin.hpp"
+#include "laser.hpp"
 #include <iostream>
 #include <vector>
 
