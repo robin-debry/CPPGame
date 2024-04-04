@@ -31,7 +31,7 @@ private:
     sf::Text scoreText;
     int score;
     sf::Clock clock;
-    bool pause;
+    bool pause = false;
     Menu menu;
     bool menuActive = true;
     

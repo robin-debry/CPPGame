@@ -68,16 +68,17 @@ void Game::processEvents() {
                 player.isSpacePressed = true;
             else if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
                 player.isSpacePressed = false;
-            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-                pause = !pause;
+            else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+            pause = !pause;
+            std::cout << "Pause state: " << (pause ? "Paused" : "Not paused") << std::endl;
+}
+
         }
     } else {
         int selection = menu.handleInput(window);
         if (selection == 0) {
-            // Play
             menuActive = false;
         } else if (selection == 1) {
-            // Quit
             window.close();
         }
     }
@@ -85,8 +86,9 @@ void Game::processEvents() {
 
 // Update game state
 void Game::update(sf::Time deltaTime) {
-    if (pause)
+    if (pause) {
         return;
+    }
     background.update(deltaTime);
     player.update(deltaTime);
     policeman.update(deltaTime);
@@ -106,7 +108,6 @@ void Game::render() {
         pause = true;
         return;
     }
-
     pause = false;
     // Render background
     background.drawBackground();
@@ -135,7 +136,6 @@ void Game::render() {
 
 // Main game loop
 int Game::run() {
-    menuActive = true; 
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();
         processEvents();
