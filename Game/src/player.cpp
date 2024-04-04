@@ -2,7 +2,7 @@
 
 Player::Player(sf::RenderWindow& window) : initialYPosition(), gravity(75.0f), 
                 isJumping(false), isSpacePressed(false), isDead(false), score(0),
-                timeElapsed(0.0f), window(window), currentRunFrame(0), playerSpeed(600.0f){
+                timeElapsed(0.0f), window(window), currentRunFrame(0), currentDieFrame(0), playerSpeed(600.0f){
     loadTextures();
 
 }
@@ -36,7 +36,21 @@ void Player::loadTextures() {
         exit(EXIT_FAILURE);
     }
 
-    
+    for (int i = 0; i < 14; ++i)
+    {
+        sf::Texture texture;
+        std::string filename = "assets/images/sprites/The Black Thief Slim Version/Animations/Death/death_";
+        filename += (i < 10) ? "00" + std::to_string(i) : "0" + std::to_string(i);
+        filename += ".png";
+
+        if (!texture.loadFromFile(filename))
+        {
+            std::cerr << "Failed to load player texture: " << filename << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        playerDieTextures.push_back(texture);
+    }
+
 
     if (!font.loadFromFile("assets/fonts/arial.ttf"))
     {
@@ -59,6 +73,18 @@ void Player::setupScene()
 void Player::update(sf::Time deltaTime) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
+
+    if (isDead)
+    {
+        //Die animation and stay on the last frame in the initialYPosition
+        if (currentDieFrame < 14)
+        {
+            player.setTexture(playerDieTextures[currentDieFrame]);
+            currentDieFrame++;
+        }
+        player.setPosition(player.getPosition().x, initialYPosition);
+        return;
+    }
 
     if (isSpacePressed)
     {

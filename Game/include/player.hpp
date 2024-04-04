@@ -41,13 +41,14 @@ private:
     std::vector<sf::Texture> playerRunTextures;
     sf::Texture playerJumpTextures;
     sf::Texture playerFallTextures;
-    sf::Texture playerDieTextures;
+    std::vector<sf::Texture> playerDieTextures;
     sf::Font font;
     std::vector<sf::Texture> playerTextures;
     sf::Clock clock;
     sf::Clock scoreClock;
 
     int currentRunFrame;
+    int currentDieFrame;
     float gravity;
     bool isJumping;
     float timeElapsed;
