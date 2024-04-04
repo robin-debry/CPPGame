@@ -10,6 +10,7 @@
 #include "obstacle.hpp"
 #include "policeman.hpp"
 #include <iostream>
+#include <SFML/Audio.hpp>
 #include <vector>
 
 class Game {
@@ -19,6 +20,7 @@ public:
 
 private:
     sf::RenderWindow window;
+    sf::Music music;
     Background background;
     Player player;
     Policeman policeman;

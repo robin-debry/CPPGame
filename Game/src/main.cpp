@@ -4,10 +4,12 @@
 #include "../include/laser.hpp"
 #include "../include/player.hpp"
 #include "../include/policeman.hpp"
+#include "SFML/Audio.hpp"
 
 
 // Main function: creates game instance and runs it
 int main() {
+    
     Game background;
     return background.run();
 

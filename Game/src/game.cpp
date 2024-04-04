@@ -8,6 +8,7 @@
 #include "../include/policeman.hpp"
 //#include "../include/obstacle.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -15,6 +16,14 @@ Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Ful
 
 
 {
+    if (!music.openFromFile("assets/music/music.mp3"))
+    {
+        std::cerr << "Failed to load music file" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    music.setLoop(true);
+    music.play();
+
     player.initialYPosition = window.getSize().y * 0.69f;
     policeman.initialYPosition = window.getSize().y * 0.69f;
     initialize();
