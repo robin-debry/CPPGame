@@ -23,11 +23,15 @@ void Laser::loadTextures() {
 
 void Laser::setupScene() {
     laser.setTexture(laserTextures[0]);
-    laser.setPosition(0.f, 400.f);
+     sf::Vector2u windowSize = window.getSize();
+     unsigned int windowHeight = windowSize.y;
+     float yPosition = static_cast<float>(rand() % static_cast<int>(windowHeight - laser.getGlobalBounds().height));
+     laser.setPosition(0.0f, yPosition);
 
 }
 
 void Laser::update(sf::Time deltaTime, Player& player) {
+
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
 
@@ -47,6 +51,7 @@ void Laser::update(sf::Time deltaTime, Player& player) {
     else if (laserTime >= 11.0f)
     {
         laserTime = 0.0f;
+        laser.setPosition(0.0f, static_cast<float>(rand() % static_cast<int>(window.getSize().y - laser.getGlobalBounds().height)));
     }
 
 
