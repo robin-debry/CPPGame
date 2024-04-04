@@ -6,6 +6,7 @@
 #include "player.hpp"
 #include "coin.hpp"
 #include "laser.hpp"
+#include "obstacle.hpp"
 #include <iostream>
 #include <vector>
 
@@ -20,6 +21,7 @@ private:
     Player player;
     Coin coin;
     Laser laser;
+    Obstacle obstacle;
     sf::Font font;
     sf::Text scoreText;
     int score;

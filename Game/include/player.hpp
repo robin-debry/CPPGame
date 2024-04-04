@@ -32,6 +32,8 @@ public:
         return player.getGlobalBounds();
     }
 
+    int score;
+
 private:
 
     sf::Sprite player;
@@ -50,7 +52,7 @@ private:
     bool isJumping;
     float timeElapsed;
     float playerSpeed;
-    int score;
+    
 
 };
 
