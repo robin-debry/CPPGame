@@ -40,6 +40,8 @@ private:
     sf::Sprite obstacleSpriteVertical;
 
     float obstacleSpeed;
+    bool gameOverActive = false;
+    
 
     
 

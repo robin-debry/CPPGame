@@ -1,8 +1,9 @@
 #include "../include/player.hpp"
+#include "../include/gameOver.hpp"
 
 Player::Player(sf::RenderWindow& window) : initialYPosition(), gravity(75.0f), 
                 isJumping(false), isSpacePressed(false), isDead(false), score(0),
-                timeElapsed(0.0f), window(window), currentRunFrame(0), currentDieFrame(0), playerSpeed(600.0f){
+                timeElapsed(0.0f), window(window), currentRunFrame(0), currentDieFrame(0), playerSpeed(600.0f),gameOverActive(false){
     loadTextures();
 
 }
@@ -73,6 +74,13 @@ void Player::setupScene()
 void Player::update(sf::Time deltaTime) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
+    gameOverActive = false;
+
+    if (isDead && !gameOverActive)
+    {
+        gameOverScreen(window);
+        gameOverActive = true;
+    }
 
     if (isDead)
     {
@@ -140,11 +148,56 @@ void Player::drawPlayer() {
 void Player::drawScore() {
     // Draw score text
     sf::Text scoreText;
+    sf::Text distanceText;
     scoreText.setFont(font);
-    scoreText.setCharacterSize(24);
-    scoreText.setFillColor(sf::Color::White);
-    scoreText.setPosition(10, 10);
+    distanceText.setFont(font);
+    scoreText.setCharacterSize(60);
+    distanceText.setCharacterSize(40);
+    scoreText.setFillColor(sf::Color::Yellow);
+    distanceText.setFillColor(sf::Color::Yellow);
+    scoreText.setPosition(800, 50);
+    distanceText.setPosition(780, 20);
     scoreText.setString(std::to_string(score) + "m");
+    distanceText.setString("Distance ");
     window.draw(scoreText);
+    window.draw(distanceText);
 }
 
+void Player::gameOverScreen(sf::RenderWindow& window) {
+    // Create an instance of GameOver class
+    GameOver gameOver(window);
+
+    // Loop for handling input and drawing game over screen
+    while (true) {
+        // Handle input for game over screen
+        int selection = gameOver.handleInput(window);
+        if (selection == 0) {
+            reset();
+            gameOverActive = false;
+            break;
+        } else if (selection == 1) {
+            // Quit option selected
+            window.close(); // Close the window
+            break;
+        }
+
+        // Clear the window
+        window.clear(sf::Color::Black);
+
+        // Draw the game over screen
+        gameOver.draw(window);
+
+        window.display();
+    }
+}
+
+void Player::reset() {
+    isDead = false;
+    isJumping = false;
+    isSpacePressed = false;
+    score = 0;
+    timeElapsed = 0.0f;
+    currentRunFrame = 0;
+    currentDieFrame = 0;
+    player.setPosition(200.f, initialYPosition);
+}

@@ -1,1 +1,0 @@
-#define BACKGROUND_SPRITE_PATH "imgs/background.jpg"

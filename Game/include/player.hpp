@@ -6,6 +6,7 @@
 #include <iostream>
 
 
+
 namespace sf {
     class RenderWindow;
 }
@@ -19,6 +20,8 @@ public:
     void loadTextures();
     void setupScene();
     void drawScore();
+    void gameOverScreen(sf::RenderWindow& window);
+    void reset();
 
     bool isSpacePressed;
     bool isDead;
@@ -53,6 +56,7 @@ private:
     bool isJumping;
     float timeElapsed;
     float playerSpeed;
+    bool gameOverActive = false;
     
 
 };

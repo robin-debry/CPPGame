@@ -27,7 +27,6 @@ public:
 private:
 
     sf::RenderWindow& window;
-    // sf::Music music;
     sf::Clock clock;
     std::vector<sf::Texture> laserTextures;
     sf::Sprite laser;

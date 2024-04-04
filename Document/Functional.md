@@ -26,5 +26,11 @@ For the first version of the game the money will not be used for anything. It wi
 To play the game you need to copy this repository and go inside the folder. Then you need to run the following command:
 
 ```bash
-./<NameOfTheGame>
+chmod +x cmd-build-sfml.sh 
+```
+
+and then run the following command:
+
+```bash
+./cmd-build-sfml.sh
 ```

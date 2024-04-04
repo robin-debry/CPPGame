@@ -1,7 +1,8 @@
 #include "../include/obstacle.hpp"
+#include "../include/gameOver.hpp"
 
 
-Obstacle::Obstacle(sf::RenderWindow& window) : player(window), window(window), obstacleSpeed(600.0f){
+Obstacle::Obstacle(sf::RenderWindow& window) : player(window), window(window), obstacleSpeed(600.0f),gameOverActive(false){
     loadTextures();
 }
 
@@ -42,6 +43,7 @@ void Obstacle::setupScene()
 void Obstacle::update(sf::Time deltaTime, Player& player) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
+    gameOverActive = false;
     
     for (sf::Sprite &obstacle : obstaclesHorizontal)
     {
@@ -63,8 +65,12 @@ void Obstacle::update(sf::Time deltaTime, Player& player) {
         float minCollisionDistanceY = 75.0f; // Increased distance
 
         if (distanceX < minCollisionDistanceX && distanceY < minCollisionDistanceY)
-        {                                                                                                        // Increase score                                                                                                           // Increase obstacles count
-            window.close();
+        {                                                                                                                                                                                                                  // Increase obstacles count
+            if (!gameOverActive)
+            {
+               player.gameOverScreen(window);
+               gameOverActive = true;
+            }
         }
     }
 
@@ -89,7 +95,11 @@ void Obstacle::update(sf::Time deltaTime, Player& player) {
 
         if (distanceX < minCollisionDistanceX && distanceY < minCollisionDistanceY)
         {                                                                                                        // Increase score                                                                                                           // Increase obstacles count
-            window.close();
+          if (!gameOverActive)
+          {
+            player.gameOverScreen(window);
+            gameOverActive = true;
+          }  
         }
     }
 }
