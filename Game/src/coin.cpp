@@ -31,7 +31,7 @@ void Coin::setupScene()
     }
 }
 
-void Coin::update(sf::Time deltaTime) {
+void Coin::update(sf::Time deltaTime, Player& player) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
 

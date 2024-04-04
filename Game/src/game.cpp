@@ -62,7 +62,7 @@ void Game::update(sf::Time deltaTime) {
         return;
     background.update(deltaTime);
     player.update(deltaTime);
-    coin.update(deltaTime);
+    coin.update(deltaTime, player);
     laser.update(deltaTime);
 }
 

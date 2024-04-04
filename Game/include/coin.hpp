@@ -17,14 +17,11 @@ public:
     Player player;
 
     Coin(sf::RenderWindow& window);
-    void update(sf::Time deltaTime);
+    void update(sf::Time deltaTime, Player& player);
     void drawCoin();
     void loadTextures();
     void setupScene();
     void drawCoinScore();
-
-    
-
 
 private:
 
