@@ -63,7 +63,7 @@ void Game::update(sf::Time deltaTime) {
     background.update(deltaTime);
     player.update(deltaTime);
     coin.update(deltaTime, player);
-    laser.update(deltaTime);
+    laser.update(deltaTime, player);
 }
 
 // Render all game objects

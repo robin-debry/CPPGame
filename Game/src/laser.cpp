@@ -27,11 +27,9 @@ void Laser::setupScene() {
 
 }
 
-void Laser::update(sf::Time deltaTime) {
+void Laser::update(sf::Time deltaTime, Player& player) {
     sf::Time DeltaTime = clock.restart();
     float dtSeconds = deltaTime.asSeconds();
-
-   
 
     laserTimeElapsed += dtSeconds;
     if (laserTimeElapsed >= 1.6f)

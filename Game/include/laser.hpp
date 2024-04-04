@@ -16,7 +16,7 @@ public:
 
     Player player;
     Laser(sf::RenderWindow& window);
-    void update(sf::Time deltaTime);
+    void update(sf::Time deltaTime, Player& player);
     void drawLaser();
     void loadTextures();
     void setupScene();
