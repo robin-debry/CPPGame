@@ -146,7 +146,7 @@ void Policeman::update(sf::Time deltaTime) {
     // Check if policeman has moved out of the window
     if (reversePoliceman.getPosition().x + reversePoliceman.getLocalBounds().width < 0) {
         // Reset policeman position to the right side of the window
-        reversePoliceman.setPosition(window.getSize().x, initialYPosition + 85);
+        reversePoliceman.setPosition(window.getSize().x, initialYPosition + 75);
     }
 
     // Move policeman from right to left

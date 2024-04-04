@@ -16,6 +16,7 @@ Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Ful
 
 {
     player.initialYPosition = window.getSize().y * 0.69f;
+    policeman.initialYPosition = window.getSize().y * 0.69f;
     initialize();
 }
 
