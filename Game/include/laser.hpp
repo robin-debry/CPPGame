@@ -37,6 +37,7 @@ private:
     float laserTime = 0.0f;
     float laserTimeDuration = 7.0f;
     float warningTime = 0.0f;
+    bool warningFlag = false;
 
 
 };

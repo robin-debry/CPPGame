@@ -1,6 +1,6 @@
 #include "../include/laser.hpp"
 
-Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f), laserTime(0.0f), laserTimeDuration(7.0f), warningTime(0.0f) {
+Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f), laserTime(0.0f), laserTimeDuration(7.0f), warningTime(0.0f), warningFlag(false) {
     loadTextures();
 }
 
@@ -76,6 +76,7 @@ void Laser::drawLaser() {
     }
     if (laserTime >= laserTimeDuration)
     {
+        warning.setPosition(warning.getPosition().x - 600.0f, warning.getPosition().y);
         window.draw(laser);
     }
 }
