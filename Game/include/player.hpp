@@ -21,6 +21,7 @@ public:
     void drawScore();
 
     bool isSpacePressed;
+    bool isDead;
     float initialYPosition;
 
     sf::Vector2f getPosition() const {
@@ -38,6 +39,7 @@ private:
     std::vector<sf::Texture> playerRunTextures;
     sf::Texture playerJumpTextures;
     sf::Texture playerFallTextures;
+    sf::Texture playerDieTextures;
     sf::Font font;
     std::vector<sf::Texture> playerTextures;
     sf::Clock clock;

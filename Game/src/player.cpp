@@ -1,7 +1,7 @@
 #include "../include/player.hpp"
 
 Player::Player(sf::RenderWindow& window) : initialYPosition(), gravity(75.0f), 
-                isJumping(false), isSpacePressed(false), score(0),
+                isJumping(false), isSpacePressed(false), isDead(false), score(0),
                 timeElapsed(0.0f), window(window), currentRunFrame(0), playerSpeed(600.0f){
     loadTextures();
 
@@ -35,6 +35,8 @@ void Player::loadTextures() {
         std::cerr << "Failed to load player fall texture." << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    
 
     if (!font.loadFromFile("assets/fonts/arial.ttf"))
     {
