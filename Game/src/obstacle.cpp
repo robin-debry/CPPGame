@@ -1,5 +1,6 @@
 #include "../include/obstacle.hpp"
 
+
 Obstacle::Obstacle(sf::RenderWindow& window) : player(window), window(window), obstacleSpeed(600.0f){
     loadTextures();
 }

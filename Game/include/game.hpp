@@ -6,6 +6,7 @@
 #include "player.hpp"
 #include "coin.hpp"
 #include "laser.hpp"
+#include "menu.hpp"
 #include "obstacle.hpp"
 #include <iostream>
 #include <vector>
@@ -27,6 +28,8 @@ private:
     int score;
     sf::Clock clock;
     bool pause;
+    Menu menu;
+    bool menuActive = true;
     
     void initialize();
     void processEvents();
