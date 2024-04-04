@@ -1,11 +1,14 @@
 #include "../include/laser.hpp"
 
-Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f), laserTime(0.0f), laserTimeDuration(7.0f), warningTime(0.0f), warningFlag(false) {
+Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f), laserTime(0.0f), laserTimeDuration(7.0f), warningTime(0.0f), warningFlag(false), laserSoundIsPlaying(false) {
 
     loadTextures();
+    loadSound();
 }
 
 void Laser::loadTextures()
+
+
 {
     for (int i = 0; i < 3; i++)
     {
@@ -27,6 +30,14 @@ void Laser::loadTextures()
         std::cerr << "Failed to load warning texture." << std::endl;
         exit(EXIT_FAILURE);
     }
+}
+
+void Laser::loadSound() {
+    if (!laserSoundBuffer.loadFromFile("assets/music/laser.mp3")) {
+        std::cerr << "Failed to load laser sound file." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    laserSound.setBuffer(laserSoundBuffer);
 }
 
 void Laser::setupScene()
@@ -98,7 +109,15 @@ void Laser::drawLaser()
     }
     if (laserTime >= laserTimeDuration)
     {
+    
         warning.setPosition(warning.getPosition().x - 600.0f, warning.getPosition().y);
         window.draw(laser);
+        if(!laserSoundIsPlaying)
+            laserSound.play();
+            laserSoundIsPlaying = true;
+    }
+    else
+    {
+        laserSoundIsPlaying = false;
     }
 }

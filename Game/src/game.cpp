@@ -23,7 +23,6 @@ Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Ful
     }
     music.setLoop(true);
     music.play();
-
     player.initialYPosition = window.getSize().y * 0.69f;
     policeman.initialYPosition = window.getSize().y * 0.69f;
     initialize();

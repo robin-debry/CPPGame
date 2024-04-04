@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cmath>
+#include <SFML/Audio.hpp>
 
 #include "player.hpp"
 
@@ -26,6 +27,7 @@ public:
 private:
 
     sf::RenderWindow& window;
+    // sf::Music music;
     sf::Clock clock;
     std::vector<sf::Texture> laserTextures;
     sf::Sprite laser;
@@ -39,6 +41,11 @@ private:
     float laserTimeDuration = 7.0f;
     float warningTime = 0.0f;
     bool warningFlag = false;
+    sf::SoundBuffer laserSoundBuffer;
+    sf::Sound laserSound;
+    bool laserSoundIsPlaying = false;
+
+    void loadSound();
 
 
 };
