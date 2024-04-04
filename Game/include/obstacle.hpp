@@ -12,23 +12,6 @@ namespace sf {
     class RenderWindow;
 }
 
-class Rectangle {
-public:
-    int x, y, width, height;
-
-    Rectangle(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
-
-    bool contains(int pointX, int pointY) {
-        return pointX >= x && pointX <= x + width && pointY >= y && pointY <= y + height;
-    }
-
-    int minCollisionDistance(int pointX, int pointY) {
-        int dx = std::max({x - pointX, 0, pointX - (x + width)});
-        int dy = std::max({y - pointY, 0, pointY - (y + height)});
-        return std::sqrt(dx * dx + dy * dy);
-    }
-};
-
 class Obstacle {
 public:
 
@@ -40,11 +23,6 @@ public:
     void loadTextures();
     void setupScene();
 
-    int x, y, width, height;
-
-    Rectangle toRectangle() {
-        return Rectangle(x, y, width, height);
-    }
 
 private:
 
