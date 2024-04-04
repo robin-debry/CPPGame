@@ -4,12 +4,16 @@
 #include "../include/coin.hpp"
 #include "../include/obstacle.hpp"
 #include "../include/menu.hpp"
+
+#include "../include/policeman.hpp"
+//#include "../include/obstacle.hpp"
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
 
-// Constructor: initialize game window and load resources
-Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window),  laser(window), pause(false), obstacle(window), menu(window),menuActive(true)
+Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen), background(window), player(window), coin(window),  laser(window), pause(false), obstacle(window), menu(window),menuActive(true),policeman(window)
+
+
 {
     player.initialYPosition = window.getSize().y * 0.69f;
     initialize();
@@ -27,6 +31,7 @@ void Game::loadTextures()
 {
     background.loadTextures();
     player.loadTextures();
+    policeman.loadTextures();
     coin.loadTextures();
     laser.loadTextures();
     obstacle.loadTextures();
@@ -36,6 +41,7 @@ void Game::loadTextures()
 void Game::setupScene() {
     background.setupScene();
     player.setupScene();
+    policeman.setupScene();
     coin.setupScene();
     laser.setupScene();
     obstacle.setupScene();
@@ -74,6 +80,7 @@ void Game::update(sf::Time deltaTime) {
         return;
     background.update(deltaTime);
     player.update(deltaTime);
+    policeman.update(deltaTime);
     coin.update(deltaTime, player);
     laser.update(deltaTime, player);
     obstacle.update(deltaTime, player);
@@ -107,6 +114,7 @@ void Game::render() {
     // Render laser
     laser.drawLaser();
 
+    policeman.drawPoliceman();
     player.drawScore();
     coin.drawCoinScore();
 

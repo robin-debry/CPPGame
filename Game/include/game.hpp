@@ -8,6 +8,7 @@
 #include "laser.hpp"
 #include "menu.hpp"
 #include "obstacle.hpp"
+#include "policeman.hpp"
 #include <iostream>
 #include <vector>
 
@@ -20,6 +21,7 @@ private:
     sf::RenderWindow window;
     Background background;
     Player player;
+    Policeman policeman;
     Coin coin;
     Laser laser;
     Obstacle obstacle;

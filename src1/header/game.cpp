@@ -4,10 +4,6 @@
 // Constructor: initialize game window and load resources
 Game::Game() : window(sf::VideoMode(800, 600), "Jetpack Joyride", sf::Style::Fullscreen),
                backgroundSpeed(600.0f), gravity(75.0f), isSpacePressed(false), score(0), Coins(0), currentRunFrame(0), currentLaserFrame(0), pause(false)
-{
-    initialYPosition = window.getSize().y * 0.68f;
-    initialize();
-}
 
 // Initialize game components
 void Game::initialize()

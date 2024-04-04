@@ -1,4 +1,5 @@
 #include "../include/coin.hpp"
+#include <cmath>
 
 Coin::Coin(sf::RenderWindow& window) : player(window), window(window), coinSpeed(600.0f), Coins(0){
     loadTextures();
