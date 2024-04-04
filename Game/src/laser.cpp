@@ -1,6 +1,6 @@
 #include "../include/laser.hpp"
 
-Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f) {
+Laser::Laser(sf::RenderWindow& window) : player(window), window(window), laserSpeed(600.0f), currentLaserFrame(0), laserTimeElapsed(0.0f), laserTime(0.0f), laserTimeDuration(7.0f) {
     loadTextures();
 }
 
@@ -34,6 +34,11 @@ void Laser::update(sf::Time deltaTime) {
    
 
     laserTimeElapsed += dtSeconds;
+    laserTime += dtSeconds;
+
+    if (laserTime >= laserTimeDuration)
+    {
+      
     if (laserTimeElapsed >= 1.6f)
     {
         currentLaserFrame = (currentLaserFrame + 1) % 3;
@@ -41,9 +46,18 @@ void Laser::update(sf::Time deltaTime) {
         laserTimeElapsed = 0.0f;
     }
 
+    else if (laserTime >= 11.0f)
+    {
+        laserTime = 0.0f;
+    }
 
+
+}
 }
 
 void Laser::drawLaser() {
-    window.draw(laser);
+    if (laserTime >= laserTimeDuration)
+    {
+        window.draw(laser);
+    }
 }
