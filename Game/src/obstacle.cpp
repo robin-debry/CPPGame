@@ -28,13 +28,13 @@ void Obstacle::setupScene()
         // Create horizontal obstacle
         obstacleSpriteHorizontal.setTexture(obstacleHorizontalTexture);            // Set obstacle texture
         obstacleSpriteHorizontal.setPosition(200.f, 300.f); // Adjust the initial position as needed
-        obstacleSpriteHorizontal.setScale(0.40f, 0.40f);               // Adjust scale as needed
+        obstacleSpriteHorizontal.setScale(0.30f, 0.30f);               // Adjust scale as needed
         obstaclesHorizontal.push_back(obstacleSpriteHorizontal);                   // Add obstacle to vector
         
         // Create vertical obstacle
         obstacleSpriteVertical.setTexture(obstacleVerticalTexture);            // Set obstacle texture
         obstacleSpriteVertical.setPosition(700.f, 800.f); // Adjust the initial position as needed
-        obstacleSpriteVertical.setScale(0.40f, 0.40f);               // Adjust scale as needed
+        obstacleSpriteVertical.setScale(0.30f, 0.30f);               // Adjust scale as needed
         obstaclesVertical.push_back(obstacleSpriteVertical);                   // Add obstacle to vector
     
     }
